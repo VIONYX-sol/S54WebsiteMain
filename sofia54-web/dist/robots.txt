@@ -1,0 +1,10 @@
+# robots.txt — Grupo Sofía54
+User-agent: *
+Allow: /
+
+# Bloquear páginas legales del índice (también marcadas noindex)
+Disallow: /aviso-legal/
+Disallow: /politica-de-privacidad/
+Disallow: /politica-de-cookies/
+
+Sitemap: https://gruposofia54.com/sitemap-index.xml
