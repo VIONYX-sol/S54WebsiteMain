@@ -1,0 +1,67 @@
+# ───────────────────────────────────────────────────────────────
+# Despliegue automático a Azure Static Web Apps
+#
+# Cada push a "main" construye el sitio Astro y lo publica.
+# Las Pull Requests generan un entorno de PREVISUALIZACIÓN temporal
+# (perfecto para que Spark Markets revise cambios antes de publicar).
+#
+# REQUISITO: añadir el secreto del repositorio
+#   AZURE_STATIC_WEB_APPS_API_TOKEN
+# (se obtiene en el portal de Azure al crear el recurso Static Web App,
+#  o se inyecta solo si creas el recurso desde el propio GitHub).
+# ───────────────────────────────────────────────────────────────
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Construir y desplegar
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir (Astro)
+        run: npm run build
+
+      - name: Desplegar en Azure
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: "/"
+          output_location: "dist"
+          skip_app_build: true
+
+  close_pull_request:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Cerrar previsualización
+    steps:
+      - name: Cerrar entorno de previsualización
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: close
