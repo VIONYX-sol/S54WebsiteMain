@@ -1,0 +1,110 @@
+# ───────────────────────────────────────────────────────────────
+# Decap CMS — panel de edición de contenido en /admin
+#
+# Permite a Spark Markets / Grupo Sofía54 editar las naves y los textos
+# SIN tocar código: los cambios se guardan como commits en GitHub y el
+# despliegue a Azure se dispara solo.
+#
+# ⚙️  CONFIGURACIÓN ÚNICA NECESARIA (ver README → "Activar el CMS"):
+#   - backend GitHub requiere un proxy OAuth (Azure Function o equivalente).
+#     Sustituye base_url por la URL de ese proxy.
+#   - Para probar en local sin OAuth: deja local_backend y ejecuta
+#       npx decap-server
+#     en otra terminal mientras corres `npm run dev`.
+# ───────────────────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: VIONYX-sol/sofia54-web        # <-- ajustar al nombre real del repo
+  branch: main
+  base_url: https://TU-PROXY-OAUTH.azurewebsites.net   # <-- proxy OAuth (ver README)
+
+# Permite editar en local con `npx decap-server` (sin OAuth) para pruebas.
+local_backend: true
+
+# Idioma del panel
+locale: es
+
+# Medios subidos DESDE el panel (logos, imágenes sueltas pequeñas).
+# El material pesado de naves (vídeos, lotes de fotos) NO va aquí: vive en
+# el CDN/Blob y se referencia por su ruta relativa a MEDIA_BASE.
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  # ─────────────────────────────────────────────────────────────
+  # CATÁLOGO DE NAVES
+  # ─────────────────────────────────────────────────────────────
+  - name: catalogo
+    label: 'Catálogo de naves'
+    delete: false
+    files:
+      - name: complejos
+        label: 'Complejos y naves'
+        file: 'src/data/complejos.json'
+        description: >-
+          Cada complejo agrupa varias naves. Las rutas de fotos, vídeo, ficha y
+          planos son RELATIVAS al CDN (MEDIA_BASE en src/data/site.ts): pega solo
+          la parte final de la ruta, no la URL completa.
+        fields:
+          - name: complejos
+            label: 'Complejos'
+            label_singular: 'Complejo'
+            widget: list
+            summary: '{{fields.nombre}} — {{fields.ciudad}}'
+            fields:
+              - { name: id, label: 'ID (sin espacios, p. ej. "aragoneses")', widget: string, pattern: ['^[a-z0-9-]+$', 'Solo minúsculas, números y guiones'] }
+              - { name: nombre, label: 'Nombre del complejo', widget: string }
+              - { name: ciudad, label: 'Ciudad', widget: string, default: 'ALCOBENDAS' }
+              - { name: descripcion, label: 'Descripción', widget: text }
+              - name: caracteristicas
+                label: 'Características (etiquetas de filtro)'
+                widget: list
+                field: { name: item, label: 'Característica', widget: string }
+              - name: badges
+                label: 'Distintivos (icono + texto)'
+                widget: list
+                summary: '{{fields.i}} {{fields.t}}'
+                required: false
+                fields:
+                  - { name: i, label: 'Icono (emoji)', widget: string }
+                  - { name: t, label: 'Texto', widget: string }
+              - { name: video, label: 'Vídeo (ruta relativa al CDN)', widget: string, required: false }
+              - name: fotos
+                label: 'Fotos del complejo (rutas relativas al CDN)'
+                widget: list
+                required: false
+                field: { name: item, label: 'Ruta de foto', widget: string }
+              - name: docsComplejo
+                label: 'Documentos del complejo (rutas relativas al CDN)'
+                widget: list
+                required: false
+                field: { name: item, label: 'Ruta de documento', widget: string }
+              - name: naves
+                label: 'Naves'
+                label_singular: 'Nave'
+                widget: list
+                summary: '{{fields.titulo}} · {{fields.m2}} m²'
+                fields:
+                  - { name: titulo, label: 'Título de la nave', widget: string }
+                  - { name: m2, label: 'Superficie (m²)', widget: number, value_type: int, min: 0 }
+                  - { name: disponible, label: '¿Disponible?', widget: boolean, default: true }
+                  - { name: desc, label: 'Descripción', widget: text }
+                  - name: caracteristicas
+                    label: 'Características'
+                    widget: list
+                    field: { name: item, label: 'Característica', widget: string }
+                  - name: imgs
+                    label: 'Imágenes (rutas relativas al CDN)'
+                    widget: list
+                    required: false
+                    field: { name: item, label: 'Ruta de imagen', widget: string }
+                  - { name: ficha, label: 'Ficha comercial PDF (ruta relativa al CDN)', widget: string, required: false }
+                  - name: planos
+                    label: 'Planos (etiqueta + ruta)'
+                    widget: list
+                    required: false
+                    summary: '{{fields.l}}'
+                    fields:
+                      - { name: l, label: 'Etiqueta del plano', widget: string }
+                      - { name: u, label: 'Ruta del PDF (relativa al CDN)', widget: string }
