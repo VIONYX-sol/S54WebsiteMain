@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" width="200" height="56" role="img" aria-label="Grupo Sofía 54">
+  <style>
+    .gs-mark { fill: #ffffff; }
+    .gs-top  { fill: rgba(255,255,255,0.6); font: 700 9px Inter, Arial, sans-serif; letter-spacing: 3px; }
+    .gs-main { fill: #ffffff; font: 800 20px Inter, Arial, sans-serif; letter-spacing: -0.5px; }
+  </style>
+  <g class="gs-mark">
+    <rect x="2" y="22" width="9" height="24" rx="1"/>
+    <rect x="13" y="14" width="9" height="32" rx="1" opacity="0.75"/>
+    <rect x="24" y="28" width="9" height="18" rx="1" opacity="0.5"/>
+  </g>
+  <text x="44" y="20" class="gs-top">GRUPO</text>
+  <text x="44" y="44" class="gs-main">SOFÍA 54</text>
+</svg>

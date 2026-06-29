@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, CONTACT } from '../data/site';
+import '../styles/pages.css';
+---
+
+<Base title="Aviso Legal" path="/aviso-legal/" noindex={true}>
+  <div class="pg">
+    <header class="pg-hero">
+      <div class="pg-container pg-container--narrow">
+        <span class="pg-eyebrow"><span></span>Legal</span>
+        <h1 class="pg-hero-title">Aviso Legal</h1>
+      </div>
+    </header>
+    <section class="pg-section">
+      <div class="pg-container pg-container--narrow pg-prose">
+        <div class="lg-note">
+          <strong>⚠️ Pendiente de validación legal.</strong> Este es el esqueleto
+          exigido por el art. 10 de la LSSI-CE. El texto definitivo debe facilitarlo
+          la asesoría jurídica del grupo antes de publicar.
+        </div>
+
+        <h2>1. Datos identificativos del titular</h2>
+        <ul>
+          <li>Denominación social: <strong>[Sociedad titular del dominio — p. ej. Sofía 54 S.L.]</strong></li>
+          <li>NIF/CIF: <strong>[Pendiente]</strong></li>
+          <li>Domicilio social: {CONTACT.address.street}, {CONTACT.address.postalCode} {CONTACT.address.city}</li>
+          <li>Datos registrales: <strong>[Registro Mercantil, tomo, folio, hoja — pendiente]</strong></li>
+          <li>Email: {CONTACT.email}</li>
+          <li>Teléfono: {CONTACT.phone}</li>
+        </ul>
+
+        <h2>2. Objeto</h2>
+        <p>[Descripción de la finalidad del sitio web {SITE.url} — pendiente.]</p>
+
+        <h2>3. Condiciones de uso</h2>
+        <p>[Condiciones de acceso y uso del sitio — pendiente.]</p>
+
+        <h2>4. Propiedad intelectual e industrial</h2>
+        <p>[Titularidad de contenidos, marcas y derechos — pendiente.]</p>
+
+        <h2>5. Exclusión de responsabilidad</h2>
+        <p>[Limitaciones de responsabilidad — pendiente.]</p>
+
+        <h2>6. Legislación aplicable y jurisdicción</h2>
+        <p>[Ley aplicable y fuero — pendiente.]</p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .lg-note {
+    background: #fff8e6;
+    border: 1px solid #f3e2a8;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    color: #6a5300;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+</style>

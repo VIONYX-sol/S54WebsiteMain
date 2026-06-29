@@ -1,0 +1,129 @@
+{
+  "_comment": "Catálogo de complejos y naves. Las rutas de medios (fotos, video, ficha, planos) son RELATIVAS a MEDIA_BASE (ver src/data/site.ts). Añadir una nave = añadir una entrada aquí (o desde el CMS en /admin). No hace falta tocar código.",
+  "complejos": [
+    {
+      "id": "aragoneses",
+      "nombre": "Aragoneses",
+      "ciudad": "ALCOBENDAS",
+      "descripcion": "Conjunto de naves industriales en el polígono de Alcobendas con visibilidad directa desde carretera. Excelentes accesos a M-40, A-1, E-15 y M-603. A escasos metros de 2 paradas de metro, cercanías y líneas de autobús. Aparcamiento privado para 185 plazas.",
+      "caracteristicas": ["Visibilidad Carretera", "Parking", "Metro", "Tren", "Bus", "Acceso Autopista"],
+      "badges": [
+        { "i": "🛣️", "t": "Visibilidad carretera" },
+        { "i": "🚗", "t": "185 plazas parking" },
+        { "i": "🚇", "t": "2 paradas metro" },
+        { "i": "🚆", "t": "Cercanías" },
+        { "i": "🛣️", "t": "M-40 · A-1 · M-603" }
+      ],
+      "video": "Aragoneses/Material-Complejo/C-%20Aragoneses%203-11%20Alcobendas_Musica.mp4",
+      "fotos": [
+        "Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-005.jpg",
+        "Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-003.jpg"
+      ],
+      "docsComplejo": [],
+      "naves": [
+        {
+          "titulo": "Aragoneses 7 POST",
+          "m2": 1160,
+          "disponible": true,
+          "desc": "Nave con semisótano, planta baja, entreplanta y altillo. Dock de carga y patio independiente.",
+          "caracteristicas": ["Visibilidad Carretera", "Metro", "Tren", "Bus", "Acceso Autopista", "Entreplanta", "Oficinas"],
+          "imgs": [
+            "Aragoneses/ARAGONESES%207%20POST/FOTOS%20ACTUALES/Grupo_Sofia54_C_Aragoneses-029.jpg",
+            "Aragoneses/ARAGONESES%207%20POST/FOTOS%20ACTUALES/Grupo_Sofia54_C_Aragoneses-030.jpg"
+          ],
+          "ficha": "Aragoneses/ARAGONESES%207%20POST/FICHA%20COMERCIAL/Ficha%20comercial%20Aragoneses%207%20Post%20MARZO2026.pdf",
+          "planos": [
+            { "l": "Distribución D01", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/D01-Distribuci%C3%B3n.pdf" },
+            { "l": "Distribución D02", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/D02-Distribuci%C3%B3n.pdf" },
+            { "l": "Distribución D03", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/D03-Distribuci%C3%B3n.pdf" },
+            { "l": "Distribución D04", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/D04-Distribuci%C3%B3n.pdf" },
+            { "l": "Superficies S01", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/S01-Superficies.pdf" },
+            { "l": "Superficies S02", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/S02-Superficies.pdf" },
+            { "l": "Superficies S03", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/S03-Superficies.pdf" },
+            { "l": "Alzado A01", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/A01-Alzado.pdf" },
+            { "l": "Alzado A02", "u": "Aragoneses/ARAGONESES%207%20POST/PLANOS%20ACTUALES/A02-Alzado.pdf" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lagranja",
+      "nombre": "La Granja",
+      "ciudad": "ALCOBENDAS",
+      "descripcion": "Complejo de naves industriales junto a la parada de metro del polígono. Comunicaciones excepcionales con M-40, A-1, E-15 y M-603. Aparcamiento privado para 145 plazas.",
+      "caracteristicas": ["Parking", "Metro", "Tren", "Bus", "Acceso Autopista"],
+      "badges": [
+        { "i": "🚇", "t": "Metro junto al complejo" },
+        { "i": "🚗", "t": "145 plazas parking" },
+        { "i": "🚆", "t": "Cercanías" },
+        { "i": "🚌", "t": "Líneas de autobús" },
+        { "i": "🛣️", "t": "M-40 · A-1 · M-603" }
+      ],
+      "video": "La%20Granja/Material%20Complejo/C-%20Granja%2037-45%20-%20Alcobendas_Musica.mp4",
+      "fotos": [
+        "La%20Granja/Material%20Complejo/Grupo_Sofia54_C_Granja-010.jpg",
+        "La%20Granja/Material%20Complejo/Grupo_Sofia54_C_Granja-025.jpg"
+      ],
+      "docsComplejo": [],
+      "naves": [
+        {
+          "titulo": "La Granja 16",
+          "m2": 1200,
+          "disponible": true,
+          "desc": "Nave industrial del conjunto La Granja 16-20. Ficha comercial disponible para descarga.",
+          "caracteristicas": ["Metro", "Tren", "Bus", "Acceso Autopista", "Parking", "Oficinas"],
+          "imgs": [],
+          "ficha": "La%20Granja/LA%20GRANJA%2016/FICHA%20COMERCIAL/01%20V3%20NAVE%2016%20FICHA%20COMERCIAL.pdf",
+          "planos": []
+        },
+        {
+          "titulo": "La Granja 18",
+          "m2": 1350,
+          "disponible": true,
+          "desc": "Nave de tamaño medio del conjunto La Granja 16-20. Excelente conectividad y acceso desde vía principal.",
+          "caracteristicas": ["Metro", "Tren", "Bus", "Acceso Autopista", "Parking", "Oficinas"],
+          "imgs": [],
+          "ficha": "La%20Granja/LA%20GRANJA%2018/02%20V3%20NAVE%2018%20FICHA%20COMERCIAL.pdf",
+          "planos": []
+        },
+        {
+          "titulo": "La Granja 20",
+          "m2": 1550,
+          "disponible": true,
+          "desc": "Mayor nave del conjunto 16-20. Mayor holgura para operaciones logísticas y almacenaje.",
+          "caracteristicas": ["Metro", "Tren", "Bus", "Acceso Autopista", "Parking", "Oficinas"],
+          "imgs": [],
+          "ficha": "La%20Granja/LA%20GRANJA%2020/FICHA%20COMERCIAL/04%20V3%20NAVE%2020%20FICHA%20COMERCIAL.pdf",
+          "planos": []
+        },
+        {
+          "titulo": "La Granja 43",
+          "m2": 1035,
+          "disponible": true,
+          "desc": "Nave en una sola planta. Distribución diáfana y versátil. Dos muelles de carga y portón lateral. Plazas de aparcamiento exclusivas.",
+          "caracteristicas": ["Metro", "Tren", "Bus", "Acceso Autopista", "Parking", "Oficinas"],
+          "imgs": [
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-036.jpg",
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-037.jpg",
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-042.jpg",
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-043.jpg",
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-044.jpg",
+            "La%20Granja/LA%20GRANJA%2043/FOTOS%20ACTUALES/Grupo_Sofia54_C_Granja-045.jpg"
+          ],
+          "ficha": null,
+          "planos": [
+            { "l": "Dist. Planta Baja", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/DISTRIBUCI%C3%93N%20PLANTA%20BAJA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Dist. Parcela", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/DISTRIBUCI%C3%93N%20PARCELA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Superficies Planta Baja", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/SUPERFICIES%20PLANTA%20BAJA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Cotas Planta Baja", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/COTAS%20PLANTA%20BAJA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Cotas Parcela", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/COTAS%20PARCELA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Alzado Principal", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/ALZADO%20PRINCIPAL%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Alzado Lateral Dcho.", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/ALZADO%20LATERAL%20DERECHO%20PARCELA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Alzado Lateral Izdo.", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/ALZADO%20LATERAL%20IZQUIERDO%20PARCELA%20LA%20GRANJA%2043%20MARZO%2026.pdf" },
+            { "l": "Plazas Aparcamiento", "u": "La%20Granja/LA%20GRANJA%2043/PLANOS%20ACTUALIZADOS/PLAZAS%20DE%20APARCAMIENTO%20LA%20GRANJA%2043.pdf" }
+          ]
+        }
+      ]
+    }
+  ]
+}

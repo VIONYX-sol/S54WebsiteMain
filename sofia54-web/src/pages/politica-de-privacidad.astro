@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../data/site';
+import '../styles/pages.css';
+---
+
+<Base title="Política de Privacidad" path="/politica-de-privacidad/" noindex={true}>
+  <div class="pg">
+    <header class="pg-hero">
+      <div class="pg-container pg-container--narrow">
+        <span class="pg-eyebrow"><span></span>Legal</span>
+        <h1 class="pg-hero-title">Política de Privacidad</h1>
+      </div>
+    </header>
+    <section class="pg-section">
+      <div class="pg-container pg-container--narrow pg-prose">
+        <div class="lg-note">
+          <strong>⚠️ Pendiente de validación legal.</strong> Esqueleto conforme al
+          RGPD (UE) 2016/679 y la LOPDGDD 3/2018. El texto definitivo debe facilitarlo
+          la asesoría jurídica del grupo antes de publicar.
+        </div>
+
+        <h2>1. Responsable del tratamiento</h2>
+        <ul>
+          <li>Titular: <strong>[Sociedad responsable — pendiente]</strong></li>
+          <li>NIF/CIF: <strong>[Pendiente]</strong></li>
+          <li>Domicilio: {CONTACT.address.street}, {CONTACT.address.postalCode} {CONTACT.address.city}</li>
+          <li>Email de contacto: {CONTACT.email}</li>
+        </ul>
+
+        <h2>2. Finalidad del tratamiento</h2>
+        <p>[Para qué se usan los datos del formulario de contacto: gestionar consultas sobre naves, etc. — pendiente.]</p>
+
+        <h2>3. Legitimación</h2>
+        <p>[Base jurídica: consentimiento del interesado / interés legítimo — pendiente.]</p>
+
+        <h2>4. Plazo de conservación</h2>
+        <p>[Tiempo de conservación de los datos — pendiente.]</p>
+
+        <h2>5. Destinatarios</h2>
+        <p>[Si se ceden datos a terceros o encargados de tratamiento — pendiente.]</p>
+
+        <h2>6. Derechos de los interesados</h2>
+        <p>
+          Acceso, rectificación, supresión, oposición, limitación y portabilidad,
+          ejercitables escribiendo a {CONTACT.email}. [Procedimiento completo y
+          referencia a la AEPD — pendiente.]
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .lg-note {
+    background: #fff8e6;
+    border: 1px solid #f3e2a8;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    color: #6a5300;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+</style>

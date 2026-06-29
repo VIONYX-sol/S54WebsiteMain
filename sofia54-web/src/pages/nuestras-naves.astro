@@ -1,0 +1,1410 @@
+---
+import Base from '../layouts/Base.astro';
+import data from '../data/complejos.json';
+import { MEDIA_BASE } from '../data/site';
+
+const description =
+  'Catálogo de naves industriales en alquiler de Grupo Sofía54 en la Comunidad de Madrid. Filtra por complejo, superficie, disponibilidad y características. Naves en Alcobendas con fichas comerciales y planos descargables.';
+
+// Reconstruye el array DATA con URLs absolutas a partir de MEDIA_BASE.
+// Para migrar a CDN, basta con cambiar MEDIA_BASE en src/data/site.ts.
+const DATA = data.complejos.map((cp) => ({
+  id: cp.id,
+  nombre: cp.nombre,
+  ciudad: cp.ciudad,
+  descripcion: cp.descripcion,
+  caracteristicas: cp.caracteristicas,
+  badges: cp.badges,
+  video: cp.video ? MEDIA_BASE + cp.video : null,
+  fotos: (cp.fotos || []).map((f) => MEDIA_BASE + f),
+  docsComplejo: cp.docsComplejo || [],
+  naves: (cp.naves || []).map((n) => ({
+    titulo: n.titulo,
+    m2: n.m2,
+    disponible: n.disponible,
+    desc: n.desc,
+    caracteristicas: n.caracteristicas,
+    imgs: (n.imgs || []).map((i) => MEDIA_BASE + i),
+    ficha: n.ficha ? MEDIA_BASE + n.ficha : null,
+    planos: (n.planos || []).map((p) => ({ l: p.l, u: MEDIA_BASE + p.u })),
+  })),
+}));
+---
+
+<Base title="Nuestras Naves" description={description} path="/nuestras-naves/">
+<style is:global>
+
+/* ============================================================
+   RESET & ROOT
+   ============================================================ */
+.gs54-naves * { box-sizing: border-box; margin: 0; padding: 0; }
+.gs54-naves {
+  --blue:       #2246f5;
+  --blue-dark:  #1535c4;
+  --blue-bg:    #e8eefa;
+  --blue-soft:  rgba(34,70,245,0.08);
+  --ink:        #1a1d2e;
+  --ink-soft:   #5a5f78;
+  --ink-light:  #8a8fa8;
+  --surface:    #f5f6fa;
+  --card:       #ffffff;
+  --border:     #e0e3ef;
+  --border-b:   rgba(34,70,245,0.14);
+  --green:      #1a6e3e;
+  --green-bg:   #e6f4ec;
+  --red:        #a82e2e;
+  --red-bg:     #faeaea;
+  --shadow-xs:  0 1px 4px rgba(0,0,0,0.06);
+  --shadow-sm:  0 2px 10px rgba(34,70,245,0.07);
+  --shadow-md:  0 6px 24px rgba(34,70,245,0.11);
+  --r-sm:       6px;
+  --r-md:       12px;
+  --r-lg:       18px;
+  font-family: 'Inter', -apple-system, Arial, sans-serif;
+  background: #ffffff;
+  color: var(--ink);
+}
+
+/* ============================================================
+   CABECERA — limpia, sin degradado, coherente con la web
+   ============================================================ */
+.gs54-header {
+  padding: 56px 32px 48px;
+  border-bottom: 1px solid var(--border);
+  background: #ffffff;
+}
+.gs54-header-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.gs54-header-left {}
+.gs54-header-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.gs54-header-eyebrow span {
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--blue);
+}
+.gs54-main-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.gs54-main-title strong {
+  color: var(--blue);
+  font-weight: 700;
+}
+.gs54-subtitle {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  max-width: 480px;
+  line-height: 1.65;
+}
+/* Stats eliminados — se añadirán cuando estén todos los complejos */
+
+/* ============================================================
+   FILTROS — sobre superficie blanca/gris muy suave
+   ============================================================ */
+.gs54-filters-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 32px;
+}
+.gs54-filters-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-end;
+}
+.gs54-filter-group { display: flex; flex-direction: column; gap: 5px; }
+.gs54-filter-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+.gs54-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.gs54-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.79rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.gs54-chip:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: var(--blue-bg);
+}
+.gs54-chip.active {
+  color: #ffffff;
+  background: var(--blue);
+  border-color: var(--blue);
+  font-weight: 600;
+}
+
+.gs54-filter-sep {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+  margin: 0 2px;
+}
+.gs54-m2-range { display: flex; align-items: center; gap: 6px; }
+.gs54-m2-range input {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.79rem;
+  color: var(--ink);
+  width: 70px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.gs54-m2-range input:focus { border-color: var(--blue); }
+.gs54-m2-range input::placeholder { color: var(--ink-light); }
+.gs54-m2-dash { color: var(--ink-light); font-size: 0.85rem; }
+
+.gs54-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gs54-reset-btn:hover { color: var(--blue); border-color: var(--blue); }
+
+/* ============================================================
+   SIN RESULTADOS
+   ============================================================ */
+.gs54-no-results {
+  text-align: center;
+  padding: 72px 24px;
+  color: var(--ink-soft);
+}
+.gs54-no-results strong {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   LAYOUT PRINCIPAL
+   ============================================================ */
+.gs54-localizacion {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 52px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+/* ============================================================
+   BLOQUE COMPLEJO
+   ============================================================ */
+.gs54-complejo-block {}
+
+/* -------- HERO VIDEO + FOTOS (composición elegante) -------- */
+.gs54-complejo-visual {
+  display: grid;
+  /* vídeo ocupa 3/4, panel fotos 1/4 */
+  grid-template-columns: 1fr 220px;
+  grid-template-rows: 360px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Celda vídeo */
+.gs54-hero-video-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+}
+.gs54-hero-video-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.60;
+}
+.gs54-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    rgba(26,29,46,0.82) 0%,
+    rgba(26,29,46,0.20) 70%
+  );
+}
+.gs54-hero-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 36px;
+}
+.gs54-hero-eyebrow {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.50);
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.gs54-hero-nombre {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+}
+.gs54-hero-ciudad {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 5px;
+}
+.gs54-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.gs54-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 40px;
+  padding: 4px 10px;
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.80);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Celda fotos — panel lateral elegante */
+.gs54-fotos-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+.gs54-fotos-panel img {
+  flex: 1;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.65) saturate(0.85);
+  transition: filter 0.3s;
+}
+.gs54-fotos-panel img:hover {
+  filter: brightness(0.85) saturate(1);
+  z-index: 2;
+}
+/* Línea azul decorativa entre vídeo y fotos */
+.gs54-fotos-panel::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 10%; bottom: 10%;
+  width: 2px;
+  background: var(--blue);
+  z-index: 5;
+  opacity: 0.7;
+}
+
+/* Responsive: en móvil las fotos desaparecen del grid */
+@media (max-width: 768px) {
+  .gs54-complejo-visual {
+    grid-template-columns: 1fr;
+    grid-template-rows: 260px;
+  }
+  .gs54-fotos-panel { display: none; }
+}
+
+/* -------- META Y DESCRIPCIÓN -------- */
+.gs54-complejo-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 22px 0 0;
+}
+.gs54-complejo-desc {
+  font-size: 0.90rem;
+  color: var(--ink-soft);
+  line-height: 1.70;
+  max-width: 620px;
+}
+.gs54-doc-group { display: flex; flex-wrap: wrap; gap: 7px; }
+.gs54-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-bg);
+  border: 1px solid var(--border-b);
+  border-radius: var(--r-sm);
+  padding: 6px 12px;
+  text-decoration: none;
+  transition: background 0.14s;
+}
+.gs54-doc-btn:hover { background: #d6e0fc; }
+
+/* ============================================================
+   DIVISOR NAVES
+   ============================================================ */
+.gs54-naves-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 16px;
+}
+.gs54-naves-hdr-txt {
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.gs54-naves-hdr-line { flex: 1; height: 1px; background: var(--border); }
+.gs54-naves-hdr-count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-bg);
+  border: 1px solid var(--border-b);
+  border-radius: 40px;
+  padding: 2px 10px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   SCROLL NAVES con flechas laterales siempre visibles
+   ============================================================ */
+.gs54-scroll-outer {
+  position: relative;
+}
+/* Flechas laterales de scroll */
+.gs54-scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.16s;
+  font-size: 1rem;
+}
+.gs54-scroll-arrow:hover {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+}
+.gs54-scroll-arrow.left  { left: -18px; }
+.gs54-scroll-arrow.right { right: -18px; }
+.gs54-scroll-arrow.hidden { opacity: 0; pointer-events: none; }
+
+/* Degradado de fade en los bordes para indicar scroll */
+.gs54-scroll-outer::before,
+.gs54-scroll-outer::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40px;
+  z-index: 5;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.gs54-scroll-outer::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff, transparent);
+}
+.gs54-scroll-outer::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff, transparent);
+}
+.gs54-scroll-outer.at-start::before { opacity: 0; }
+.gs54-scroll-outer.at-end::after    { opacity: 0; }
+
+.gs54-naves-scroll {
+  overflow-x: auto;
+  padding: 6px 2px 14px;
+  scrollbar-width: none;   /* ocultar scrollbar nativa — las flechas la reemplazan */
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+.gs54-naves-scroll::-webkit-scrollbar { display: none; }
+
+.gs54-naves-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  width: max-content;
+}
+
+/* ============================================================
+   TARJETA NAVE
+   ============================================================ */
+.gs54-nave-card {
+  width: 292px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.16s, box-shadow 0.16s;
+}
+.gs54-nave-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Carrusel */
+.gs54-carrusel {
+  position: relative;
+  width: 100%;
+  height: 188px;
+  background: var(--surface);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.gs54-carrusel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.gs54-carrusel img.active { opacity: 1; z-index: 1; }
+
+.gs54-carr-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  color: var(--ink);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.14s;
+  box-shadow: var(--shadow-xs);
+}
+.gs54-carrusel:hover .gs54-carr-arrow { display: flex; }
+.gs54-carr-arrow:hover { background: var(--blue); color: #fff; }
+.gs54-carr-arrow.left  { left: 7px; }
+.gs54-carr-arrow.right { right: 7px; }
+
+.gs54-carr-dots {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 4px;
+}
+.gs54-carr-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.16s, transform 0.16s;
+}
+.gs54-carr-dot.active { background: #fff; transform: scale(1.3); }
+
+.gs54-carrusel-noimg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-light);
+  font-size: 0.75rem;
+  gap: 8px;
+}
+
+/* Cuerpo */
+.gs54-nave-body {
+  padding: 15px 16px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gs54-nave-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.gs54-nave-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gs54-nave-m2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+.gs54-nave-m2 sup {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.gs54-nave-estado {
+  font-size: 0.70rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 40px;
+  letter-spacing: 0.03em;
+}
+.gs54-estado-disponible { background: var(--green-bg); color: var(--green); border: 1px solid rgba(26,110,62,0.16); }
+.gs54-estado-ocupada    { background: var(--red-bg);   color: var(--red);   border: 1px solid rgba(168,46,46,0.16); }
+
+.gs54-nave-desc {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* Footer docs */
+.gs54-nave-footer {
+  border-top: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.gs54-nave-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.69rem;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-bg);
+  border: 1px solid var(--border-b);
+  border-radius: 4px;
+  padding: 4px 9px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.13s;
+  font-family: 'Inter', sans-serif;
+}
+.gs54-nave-doc-btn:hover { background: #d6e0fc; }
+
+/* Panel planos desplegable */
+.gs54-planos-panel {
+  display: none;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px 16px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* ============================================================
+   ETIQUETA CIUDAD (encima de cada complejo)
+   ============================================================ */
+.gs54-ciudad-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.71rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.gs54-lbx-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(10,12,22,0.92);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  animation: gs54LbxFadeIn 0.22s ease;
+}
+.gs54-lbx-overlay.open { display: flex; }
+@keyframes gs54LbxFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Toolbar superior */
+.gs54-lbx-toolbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(to bottom, rgba(10,12,22,0.70), transparent);
+  z-index: 2;
+}
+.gs54-lbx-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.70);
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gs54-lbx-counter {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.40);
+  margin-left: auto;
+  margin-right: 16px;
+}
+.gs54-lbx-close {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.80);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.gs54-lbx-close:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* Media principal */
+.gs54-lbx-media {
+  max-width: min(92vw, 1100px);
+  max-height: calc(100vh - 100px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gs54-lbx-media img {
+  max-width: 100%;
+  max-height: calc(100vh - 110px);
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.50);
+  animation: gs54LbxSlideIn 0.20s ease;
+}
+.gs54-lbx-media video {
+  max-width: 100%;
+  max-height: calc(100vh - 110px);
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.50);
+  outline: none;
+}
+@keyframes gs54LbxSlideIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Flechas navegación lightbox */
+.gs54-lbx-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.80);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.15s;
+  z-index: 3;
+}
+.gs54-lbx-nav:hover { background: rgba(34,70,245,0.65); color: #fff; border-color: transparent; }
+.gs54-lbx-nav.prev { left: -60px; }
+.gs54-lbx-nav.next { right: -60px; }
+.gs54-lbx-nav.hidden { opacity: 0; pointer-events: none; }
+
+/* Thumbnails strip */
+.gs54-lbx-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  max-width: min(92vw, 1100px);
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+.gs54-lbx-thumbs::-webkit-scrollbar { height: 3px; }
+.gs54-lbx-thumbs::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+.gs54-lbx-thumb {
+  flex-shrink: 0;
+  width: 64px;
+  height: 44px;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  transition: opacity 0.15s, border-color 0.15s;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+}
+.gs54-lbx-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.gs54-lbx-thumb.video-thumb {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.62rem;
+  font-family: 'Inter', sans-serif;
+  flex-direction: column;
+  gap: 2px;
+}
+.gs54-lbx-thumb.active {
+  opacity: 1;
+  border-color: var(--blue);
+}
+.gs54-lbx-thumb:hover { opacity: 0.85; }
+
+/* Responsive lightbox */
+@media (max-width: 640px) {
+  .gs54-lbx-nav.prev { left: 4px; }
+  .gs54-lbx-nav.next { right: 4px; }
+  .gs54-lbx-nav { width: 36px; height: 36px; font-size: 0.9rem; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px) {
+  .gs54-header { padding: 36px 18px 32px; }
+  .gs54-filters-wrap { padding: 16px 18px; }
+  .gs54-localizacion { padding: 36px 18px 60px; gap: 60px; }
+  .gs54-scroll-arrow { display: none; }
+  .gs54-scroll-outer::before,
+  .gs54-scroll-outer::after { display: none; }
+  .gs54-naves-scroll { padding-bottom: 10px; scrollbar-width: thin; }
+  .gs54-nave-card { width: 264px; }
+  .gs54-header-stats { display: none; }
+}
+</style>
+
+<div class="gs54-naves" id="nuestras-naves">
+
+  <!-- CABECERA LIMPIA -->
+  <div class="gs54-header">
+    <div class="gs54-header-inner">
+      <div class="gs54-header-left">
+        <h2 class="gs54-main-title">Nuestras <strong>Naves</strong></h2>
+        <p class="gs54-subtitle">Espacios industriales de primer nivel con acceso directo a las principales vías de comunicación de Madrid.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="gs54-filters-wrap">
+    <div class="gs54-filters-inner">
+
+      <div class="gs54-filter-group">
+        <div class="gs54-filter-label">Complejo</div>
+        <div class="gs54-chips" id="chip-complejo">
+          <span class="gs54-chip active" data-value="all">Todos</span>
+          <span class="gs54-chip" data-value="Aragoneses">Aragoneses</span>
+          <span class="gs54-chip" data-value="La Granja">La Granja</span>
+        </div>
+      </div>
+
+      <div class="gs54-filter-sep"></div>
+
+      <div class="gs54-filter-group">
+        <div class="gs54-filter-label">Características</div>
+        <div class="gs54-chips" id="chip-caracts">
+          <span class="gs54-chip" data-value="Visibilidad Carretera">🛣️ Visibilidad carretera</span>
+          <span class="gs54-chip" data-value="Metro">🚇 Metro</span>
+          <span class="gs54-chip" data-value="Tren">🚆 Cercanías</span>
+          <span class="gs54-chip" data-value="Bus">🚌 Bus</span>
+          <span class="gs54-chip" data-value="Parking">🚗 Parking</span>
+          <span class="gs54-chip" data-value="Acceso Autopista">🛣️ Autopista</span>
+          <span class="gs54-chip" data-value="Entreplanta">🏢 Entreplanta</span>
+          <span class="gs54-chip" data-value="Oficinas">💼 Oficinas</span>
+        </div>
+      </div>
+
+      <div class="gs54-filter-sep"></div>
+
+      <div class="gs54-filter-group">
+        <div class="gs54-filter-label">Disponibilidad</div>
+        <div class="gs54-chips" id="chip-disp">
+          <span class="gs54-chip active" data-value="all">Todas</span>
+          <span class="gs54-chip" data-value="disponible">Disponible</span>
+          <span class="gs54-chip" data-value="ocupada">Ocupada</span>
+        </div>
+      </div>
+
+      <div class="gs54-filter-sep"></div>
+
+      <div class="gs54-filter-group">
+        <div class="gs54-filter-label">Superficie (m²)</div>
+        <div class="gs54-m2-range">
+          <input type="number" id="gs54-m2-min" placeholder="Mín" min="0">
+          <span class="gs54-m2-dash">–</span>
+          <input type="number" id="gs54-m2-max" placeholder="Máx" min="0">
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;">
+        <button class="gs54-reset-btn" id="gs54-reset">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 106-6H4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M2 4v4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Limpiar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="gs54-localizacion" id="gs54-localizacion"></div>
+
+</div>
+
+<!-- LIGHTBOX (fuera del contenedor principal) -->
+<div class="gs54-lbx-overlay" id="gs54-lbx" role="dialog" aria-modal="true" aria-label="Visor de imágenes">
+  <div class="gs54-lbx-toolbar">
+    <span class="gs54-lbx-title" id="gs54-lbx-title"></span>
+    <span class="gs54-lbx-counter" id="gs54-lbx-counter"></span>
+    <button class="gs54-lbx-close" id="gs54-lbx-close" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="gs54-lbx-media" id="gs54-lbx-media">
+    <button class="gs54-lbx-nav prev hidden" id="gs54-lbx-prev" aria-label="Anterior">&#8592;</button>
+    <button class="gs54-lbx-nav next hidden" id="gs54-lbx-next" aria-label="Siguiente">&#8594;</button>
+  </div>
+  <div class="gs54-lbx-thumbs" id="gs54-lbx-thumbs"></div>
+</div>
+
+<script is:inline define:vars={{ DATA }}>
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const F = { complejo:'all', caracts: new Set(), disp:'all', m2min:null, m2max:null };
+
+/* ============================================================
+   SVG ICONS
+   ============================================================ */
+const ICO_DOWN = `<svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 8l4 4 4-4M2 14h12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICO_DOC  = `<svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l4 4v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+const ICO_PLAN = `<svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M5 5h6M5 8h4M5 11h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+const ICO_IMG  = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M7 22l5-6 4 5 3-3 6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".35"/><circle cx="20" cy="11" r="2.5" fill="currentColor" opacity=".25"/></svg>`;
+
+/* ============================================================
+   FILTRADO
+   ============================================================ */
+function naveOk(n) {
+  if (F.disp !== 'all' && n.disponible !== (F.disp==='disponible')) return false;
+  if (F.m2min && n.m2 < F.m2min) return false;
+  if (F.m2max && n.m2 > F.m2max) return false;
+  if (F.caracts.size > 0) for (const c of F.caracts) if (!(n.caracteristicas||[]).includes(c)) return false;
+  return true;
+}
+function getVisible() {
+  return DATA
+    .filter(cp => F.complejo==='all' || cp.nombre===F.complejo)
+    .map(cp => ({...cp, naves: cp.naves.filter(naveOk)}))
+    .filter(cp => cp.naves.length > 0);
+}
+
+/* ============================================================
+   RENDER TARJETA
+   ============================================================ */
+function renderCard(nave, cpId, idx) {
+  const cid = `gc-${cpId}-${idx}`;
+  const hasImgs = nave.imgs && nave.imgs.length > 0;
+
+  const imgHtml = hasImgs
+    ? nave.imgs.map((s,i)=>`<img src="${s}" alt="${nave.titulo}" class="${i===0?'active':''} gs54-lbx-trigger" loading="lazy" data-lightbox-src="${s}" data-lightbox-type="img" data-lightbox-title="${nave.titulo}" data-lightbox-group="nave-${cid}" data-lightbox-idx="${i}" style="cursor:zoom-in;">`).join('')
+    : `<div class="gs54-carrusel-noimg" style="color:var(--ink-light);">${ICO_IMG}<span>Foto próximamente</span></div>`;
+
+  const dotsHtml = hasImgs && nave.imgs.length > 1
+    ? `<div class="gs54-carr-dots">${nave.imgs.map((_,i)=>`<span class="gs54-carr-dot${i===0?' active':''}" data-i="${i}"></span>`).join('')}</div>`
+    : '';
+  const arrowsHtml = hasImgs && nave.imgs.length > 1
+    ? `<button class="gs54-carr-arrow left" aria-label="Anterior">&#8592;</button><button class="gs54-carr-arrow right" aria-label="Siguiente">&#8594;</button>`
+    : '';
+
+  const eClass = nave.disponible ? 'gs54-estado-disponible' : 'gs54-estado-ocupada';
+  const eTxt   = nave.disponible ? 'Disponible' : 'Ocupada';
+
+  let footerBtns = '';
+  if (nave.ficha) footerBtns += `<a class="gs54-nave-doc-btn" href="${nave.ficha}" target="_blank" rel="noopener">${ICO_DOC} Ficha comercial</a>`;
+  if (nave.planos && nave.planos.length > 0) {
+    if (nave.planos.length <= 2) {
+      nave.planos.forEach(p => { footerBtns += `<a class="gs54-nave-doc-btn" href="${p.u}" target="_blank" rel="noopener">${ICO_PLAN} ${p.l}</a>`; });
+    } else {
+      footerBtns += `<button class="gs54-nave-doc-btn gs54-planos-toggle" data-panel="${cid}-planos">${ICO_PLAN} Planos (${nave.planos.length}) ▾</button>`;
+    }
+  }
+  const planosPanel = (nave.planos && nave.planos.length > 2)
+    ? `<div id="${cid}-planos" class="gs54-planos-panel">${nave.planos.map(p=>`<a class="gs54-nave-doc-btn" href="${p.u}" target="_blank" rel="noopener">${ICO_DOWN} ${p.l}</a>`).join('')}</div>`
+    : '';
+
+  return `
+    <div class="gs54-nave-card">
+      <div class="gs54-carrusel" id="${cid}">${arrowsHtml}${imgHtml}${dotsHtml}</div>
+      <div class="gs54-nave-body">
+        <div class="gs54-nave-title">${nave.titulo}</div>
+        <div class="gs54-nave-meta">
+          <div class="gs54-nave-m2">${nave.m2.toLocaleString('es-ES')} <sup>m²</sup></div>
+          <span class="gs54-nave-estado ${eClass}">${eTxt}</span>
+        </div>
+        ${nave.desc ? `<p class="gs54-nave-desc">${nave.desc}</p>` : ''}
+      </div>
+      ${footerBtns ? `<div class="gs54-nave-footer">${footerBtns}</div>` : ''}
+      ${planosPanel}
+    </div>`;
+}
+
+/* ============================================================
+   RENDER COMPLEJO
+   ============================================================ */
+function renderAll() {
+  const cont = document.getElementById('gs54-localizacion');
+  const visible = getVisible();
+
+  if (!visible.length) {
+    cont.innerHTML = `<div class="gs54-no-results"><strong>Sin resultados</strong>Prueba a ajustar los filtros.</div>`;
+    return;
+  }
+
+  cont.innerHTML = visible.map(cp => {
+    const badgesHtml  = cp.badges.map(b=>`<span class="gs54-hero-badge">${b.i} ${b.t}</span>`).join('');
+    const heroMedia   = cp.video
+      ? `<video autoplay muted loop playsinline preload="none" src="${cp.video}" data-lightbox-src="${cp.video}" data-lightbox-type="video" data-lightbox-title="${cp.nombre} — Vídeo del complejo" class="gs54-lbx-trigger" style="cursor:zoom-in;"></video>`
+      : '';
+    // Fotos del panel lateral con lightbox
+    const allComplejoMedia = [...(cp.video ? [{src:cp.video, type:'video', title:`${cp.nombre} — Vídeo`}] : []), ...cp.fotos.map(f=>({src:f, type:'img', title:`${cp.nombre}`}))];
+    const fotosHtml = cp.fotos.map((f,fi)=>`<img src="${f}" alt="${cp.nombre}" loading="lazy" class="gs54-lbx-trigger" data-lightbox-src="${f}" data-lightbox-type="img" data-lightbox-title="${cp.nombre}" data-lightbox-group="complejo-${cp.id}" data-lightbox-idx="${fi}" style="cursor:zoom-in;">`).join('');
+    const docsHtml    = (cp.docsComplejo||[]).map(d=>`<a class="gs54-doc-btn" href="${d.u}" target="_blank" rel="noopener">${ICO_DOWN} ${d.l}</a>`).join('');
+    const navesHtml   = cp.naves.map((n,i)=>renderCard(n, cp.id, i)).join('');
+    const uniqueId    = `scroll-${cp.id}`;
+
+    return `
+      <div class="gs54-complejo-block">
+
+        <!-- Etiqueta ciudad encima del complejo -->
+        <div class="gs54-ciudad-label">📍 ${cp.ciudad}, Madrid</div>
+
+        <!-- VISUAL: vídeo + panel lateral fotos -->
+        <div class="gs54-complejo-visual">
+          <div class="gs54-hero-video-wrap">
+            ${heroMedia}
+            <div class="gs54-hero-overlay"></div>
+
+            <div class="gs54-hero-content">
+              <div class="gs54-hero-eyebrow">Complejo Industrial</div>
+              <div class="gs54-hero-nombre">${cp.nombre}</div>
+              <div class="gs54-hero-badges">${badgesHtml}</div>
+            </div>
+          </div>
+          <div class="gs54-fotos-panel">${fotosHtml}</div>
+        </div>
+
+        <!-- META -->
+        <div class="gs54-complejo-meta">
+          <p class="gs54-complejo-desc">${cp.descripcion}</p>
+          ${docsHtml ? `<div class="gs54-doc-group">${docsHtml}</div>` : ''}
+        </div>
+
+        <!-- NAVES -->
+        <div class="gs54-naves-hdr">
+          <span class="gs54-naves-hdr-txt">Naves</span>
+          <span class="gs54-naves-hdr-count">${cp.naves.length} nave${cp.naves.length!==1?'s':''}</span>
+          <div class="gs54-naves-hdr-line"></div>
+        </div>
+
+        <div class="gs54-scroll-outer at-start" id="outer-${cp.id}">
+          <button class="gs54-scroll-arrow left hidden" id="arr-left-${cp.id}" aria-label="Anterior">&#8592;</button>
+          <div class="gs54-naves-scroll" id="${uniqueId}">
+            <div class="gs54-naves-grid">${navesHtml}</div>
+          </div>
+          <button class="gs54-scroll-arrow right" id="arr-right-${cp.id}" aria-label="Siguiente">&#8594;</button>
+        </div>
+
+      </div>`;
+  }).join('');
+
+  initCarruseles();
+  initScrollArrows();
+  initToggles();
+}
+
+/* ============================================================
+   FLECHAS SCROLL HORIZONTAL
+   ============================================================ */
+function initScrollArrows() {
+  DATA.forEach(cp => {
+    const scrollEl = document.getElementById(`scroll-${cp.id}`);
+    const outer    = document.getElementById(`outer-${cp.id}`);
+    const btnL     = document.getElementById(`arr-left-${cp.id}`);
+    const btnR     = document.getElementById(`arr-right-${cp.id}`);
+    if (!scrollEl || !btnL || !btnR) return;
+
+    const STEP = 340;
+
+    function updateArrows() {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollEl;
+      const atStart = scrollLeft <= 2;
+      const atEnd   = scrollLeft + clientWidth >= scrollWidth - 2;
+      btnL.classList.toggle('hidden', atStart);
+      btnR.classList.toggle('hidden', atEnd);
+      outer.classList.toggle('at-start', atStart);
+      outer.classList.toggle('at-end', atEnd);
+    }
+
+    btnL.addEventListener('click', () => { scrollEl.scrollBy({ left: -STEP, behavior: 'smooth' }); });
+    btnR.addEventListener('click', () => { scrollEl.scrollBy({ left:  STEP, behavior: 'smooth' }); });
+    scrollEl.addEventListener('scroll', updateArrows, { passive: true });
+
+    // Estado inicial
+    setTimeout(updateArrows, 80);
+  });
+}
+
+/* ============================================================
+   CARRUSELES
+   ============================================================ */
+const timers = new Map();
+function initCarruseles() {
+  timers.forEach(clearInterval); timers.clear();
+  document.querySelectorAll('.gs54-carrusel').forEach(el => {
+    const imgs = el.querySelectorAll('img');
+    const dots = el.querySelectorAll('.gs54-carr-dot');
+    if (imgs.length < 2) return;
+    let idx = 0;
+    const show = i => {
+      imgs.forEach((img,j) => img.classList.toggle('active', j===i));
+      dots.forEach((d,j)   => d.classList.toggle('active',   j===i));
+    };
+    let t = setInterval(() => { idx=(idx+1)%imgs.length; show(idx); }, 3200);
+    timers.set(el.id, t);
+    el.addEventListener('mouseenter', () => clearInterval(t));
+    el.addEventListener('mouseleave', () => { t=setInterval(()=>{ idx=(idx+1)%imgs.length; show(idx); }, 3200); timers.set(el.id,t); });
+    el.querySelectorAll('.gs54-carr-arrow').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation(); clearInterval(t);
+        idx = btn.classList.contains('right') ? (idx+1)%imgs.length : (idx-1+imgs.length)%imgs.length;
+        show(idx);
+      });
+    });
+    dots.forEach((d,i) => d.addEventListener('click', () => { clearInterval(t); idx=i; show(idx); }));
+  });
+}
+
+/* ============================================================
+   TOGGLES PLANOS
+   ============================================================ */
+function initToggles() {
+  document.querySelectorAll('.gs54-planos-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = document.getElementById(btn.dataset.panel);
+      if (!p) return;
+      const open = p.style.display === 'flex';
+      p.style.display = open ? 'none' : 'flex';
+      btn.innerHTML = btn.innerHTML.replace(open ? '▴' : '▾', open ? '▾' : '▴');
+    });
+  });
+}
+
+/* ============================================================
+   LIGHTBOX ENGINE
+   ============================================================ */
+const LBX = {
+  overlay:  null,
+  media:    null,
+  titleEl:  null,
+  counter:  null,
+  thumbs:   null,
+  btnPrev:  null,
+  btnNext:  null,
+  items:    [],   // [{src, type, title}]
+  current:  0,
+
+  init() {
+    this.overlay = document.getElementById('gs54-lbx');
+    this.media   = document.getElementById('gs54-lbx-media');
+    this.titleEl = document.getElementById('gs54-lbx-title');
+    this.counter = document.getElementById('gs54-lbx-counter');
+    this.thumbs  = document.getElementById('gs54-lbx-thumbs');
+    this.btnPrev = document.getElementById('gs54-lbx-prev');
+    this.btnNext = document.getElementById('gs54-lbx-next');
+
+    document.getElementById('gs54-lbx-close').addEventListener('click', () => this.close());
+    this.overlay.addEventListener('click', e => { if (e.target === this.overlay) this.close(); });
+    this.btnPrev.addEventListener('click', () => this.go(this.current - 1));
+    this.btnNext.addEventListener('click', () => this.go(this.current + 1));
+    document.addEventListener('keydown', e => {
+      if (!this.overlay.classList.contains('open')) return;
+      if (e.key === 'Escape')      this.close();
+      if (e.key === 'ArrowLeft')   this.go(this.current - 1);
+      if (e.key === 'ArrowRight')  this.go(this.current + 1);
+    });
+  },
+
+  /* Abre con una lista de items y va al índice indicado */
+  open(items, idx = 0) {
+    this.items   = items;
+    this.current = idx;
+    this.overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    this._buildThumbs();
+    this._show(idx);
+  },
+
+  close() {
+    this.overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    // Pausar vídeo si hay uno activo
+    const v = this.media.querySelector('video');
+    if (v) v.pause();
+  },
+
+  go(idx) {
+    if (idx < 0 || idx >= this.items.length) return;
+    this.current = idx;
+    this._show(idx);
+  },
+
+  _show(idx) {
+    const item = this.items[idx];
+    if (!item) return;
+
+    // Limpiar media anterior (excepto botones nav)
+    const prev = this.media.querySelector('img, video');
+    if (prev) prev.remove();
+
+    // Crear nuevo elemento
+    let el;
+    if (item.type === 'video') {
+      el = document.createElement('video');
+      el.src = item.src;
+      el.controls = true;
+      el.autoplay = true;
+      el.style.maxWidth  = '100%';
+      el.style.maxHeight = 'calc(100vh - 110px)';
+      el.style.borderRadius = '8px';
+      el.style.boxShadow = '0 24px 80px rgba(0,0,0,0.50)';
+    } else {
+      el = document.createElement('img');
+      el.src = item.src;
+      el.alt = item.title || '';
+    }
+    // Insertar antes de los botones nav
+    this.media.insertBefore(el, this.btnPrev);
+
+    // UI
+    this.titleEl.textContent = item.title || '';
+    this.counter.textContent = this.items.length > 1 ? `${idx + 1} / ${this.items.length}` : '';
+    this.btnPrev.classList.toggle('hidden', idx === 0);
+    this.btnNext.classList.toggle('hidden', idx === this.items.length - 1);
+
+    // Actualizar thumb activo
+    this.thumbs.querySelectorAll('.gs54-lbx-thumb').forEach((t,i) => t.classList.toggle('active', i === idx));
+    // Hacer scroll al thumb activo
+    const activeThumb = this.thumbs.querySelectorAll('.gs54-lbx-thumb')[idx];
+    if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  },
+
+  _buildThumbs() {
+    this.thumbs.innerHTML = '';
+    if (this.items.length <= 1) { this.thumbs.style.display = 'none'; return; }
+    this.thumbs.style.display = 'flex';
+    this.items.forEach((item, i) => {
+      const t = document.createElement('div');
+      t.className = 'gs54-lbx-thumb' + (i === this.current ? ' active' : '');
+      if (item.type === 'video') {
+        t.classList.add('video-thumb');
+        t.innerHTML = `<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.3" opacity=".5"/><path d="M8 7l6 3-6 3V7z" fill="currentColor" opacity=".7"/></svg><span>Vídeo</span>`;
+      } else {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.title || '';
+        img.loading = 'lazy';
+        t.appendChild(img);
+      }
+      t.addEventListener('click', () => this.go(i));
+      this.thumbs.appendChild(t);
+    });
+  }
+};
+
+/* Delegación de eventos para abrir lightbox en cualquier .gs54-lbx-trigger */
+function initLightbox() {
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('.gs54-lbx-trigger');
+    if (!trigger) return;
+
+    const group = trigger.dataset.lightboxGroup;
+    let items, idx = 0;
+
+    if (group) {
+      // Reunir todos los triggers del mismo grupo
+      const groupEls = Array.from(document.querySelectorAll(`[data-lightbox-group="${group}"]`));
+      items = groupEls.map(el => ({
+        src:   el.dataset.lightboxSrc,
+        type:  el.dataset.lightboxType || 'img',
+        title: el.dataset.lightboxTitle || '',
+      }));
+      idx = parseInt(trigger.dataset.lightboxIdx || '0', 10);
+    } else if (trigger.dataset.lightboxSrc) {
+      // Ítem único (vídeo complejo, expand button)
+      items = [{
+        src:   trigger.dataset.lightboxSrc,
+        type:  trigger.dataset.lightboxType || 'img',
+        title: trigger.dataset.lightboxTitle || '',
+      }];
+      idx = 0;
+    } else {
+      return;
+    }
+
+    if (!items || !items.length) return;
+    e.preventDefault();
+    LBX.open(items, idx);
+  });
+}
+
+/* ============================================================
+   CHIPS
+   ============================================================ */
+function setupChips(id, onSingle, multi) {
+  const wrap = document.getElementById(id);
+  if (!wrap) return;
+  wrap.addEventListener('click', e => {
+    const c = e.target.closest('.gs54-chip'); if (!c) return;
+    const v = c.dataset.value;
+    if (!multi) {
+      wrap.querySelectorAll('.gs54-chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      onSingle(v);
+    } else {
+      if (c.classList.contains('active')) { c.classList.remove('active'); F.caracts.delete(v); }
+      else                                { c.classList.add('active');    F.caracts.add(v); }
+      renderAll();
+    }
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  setupChips('chip-complejo', v => { F.complejo=v; renderAll(); }, false);
+  setupChips('chip-disp',     v => { F.disp=v;    renderAll(); }, false);
+  setupChips('chip-caracts',  null, true);
+
+  document.getElementById('gs54-m2-min').addEventListener('input', e => { F.m2min=parseInt(e.target.value)||null; renderAll(); });
+  document.getElementById('gs54-m2-max').addEventListener('input', e => { F.m2max=parseInt(e.target.value)||null; renderAll(); });
+
+  document.getElementById('gs54-reset').addEventListener('click', () => {
+    F.complejo='all'; F.caracts=new Set(); F.disp='all'; F.m2min=null; F.m2max=null;
+    document.getElementById('gs54-m2-min').value='';
+    document.getElementById('gs54-m2-max').value='';
+    document.querySelectorAll('#chip-complejo .gs54-chip').forEach(c => c.classList.toggle('active', c.dataset.value==='all'));
+    document.querySelectorAll('#chip-disp    .gs54-chip').forEach(c => c.classList.toggle('active', c.dataset.value==='all'));
+    document.querySelectorAll('#chip-caracts .gs54-chip').forEach(c => c.classList.remove('active'));
+    renderAll();
+  });
+
+  LBX.init();
+  initLightbox();
+  renderAll();
+});
+</script>
+</Base>

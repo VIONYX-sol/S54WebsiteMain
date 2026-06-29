@@ -1,0 +1,81 @@
+---
+import { SITE, BRAND } from '../data/site';
+
+export interface Props {
+  /** Título de la página (sin el sufijo de marca). */
+  title: string;
+  /** Meta description específica de la página. */
+  description?: string;
+  /** Ruta canónica relativa, p. ej. "/contacto/". Por defecto, la actual. */
+  path?: string;
+  /** Imagen para compartir en redes (Open Graph). Ruta absoluta o relativa. */
+  ogImage?: string;
+  /** og:type — "website" por defecto, "article" para entradas. */
+  ogType?: string;
+  /** Si true, indica a buscadores que NO indexen (páginas legales, etc.). */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  path = Astro.url.pathname,
+  ogImage = BRAND.ogImage,
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const fullTitle =
+  title === SITE.titleSuffix ? title : `${title} | ${SITE.titleSuffix}`;
+const canonical = new URL(path, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
+---
+
+<!-- Charset y viewport -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Título y descripción -->
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<!-- Indexación -->
+{
+  noindex ? (
+    <meta name="robots" content="noindex, nofollow" />
+  ) : (
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+  )
+}
+
+<!-- Idioma y zona geográfica (GEO) -->
+<meta name="language" content="Spanish" />
+<meta name="geo.region" content="ES-MD" />
+<meta name="geo.placename" content="Comunidad de Madrid" />
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Favicons -->
+<link rel="icon" href={BRAND.favicon} sizes="any" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+<!-- Tipografía: precarga para evitar parpadeo -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

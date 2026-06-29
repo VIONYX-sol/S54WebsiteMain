@@ -1,0 +1,242 @@
+/* ============================================================
+   ESTILOS COMPARTIDOS — páginas de contenido
+   Coherentes con los tokens de la web (azul #2246f5, ink #1a1d2e)
+   ============================================================ */
+.pg {
+  --blue: #2246f5;
+  --blue-dark: #1535c4;
+  --blue-bg: #e8eefa;
+  --ink: #1a1d2e;
+  --ink-soft: #5a5f78;
+  --ink-light: #9298b0;
+  --surface: #f5f6fa;
+  --border: #e0e3ef;
+  --card: #ffffff;
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+}
+
+.pg-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.pg-container--narrow {
+  max-width: 820px;
+}
+
+/* Cabecera de página */
+.pg-hero {
+  padding: 88px 0 56px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+.pg-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.pg-eyebrow span {
+  width: 24px;
+  height: 1px;
+  background: var(--blue);
+  display: inline-block;
+}
+.pg-hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+.pg-hero-sub {
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0;
+}
+
+/* Secciones */
+.pg-section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pg-section--surface {
+  background: var(--surface);
+}
+.pg-section-title {
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+.pg-section-title--center {
+  text-align: center;
+}
+.pg-prose p {
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin: 0 0 18px;
+  max-width: 760px;
+}
+.pg-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.pg-prose h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 36px 0 14px;
+}
+.pg-prose h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 28px 0 10px;
+}
+.pg-prose ul {
+  color: var(--ink-soft);
+  line-height: 1.8;
+  padding-left: 22px;
+  margin: 0 0 18px;
+  max-width: 760px;
+}
+
+/* Rejilla de tarjetas */
+.pg-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 36px;
+}
+.pg-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.pg-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.pg-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 28px 24px;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+.pg-card:hover {
+  box-shadow: 0 8px 30px rgba(34, 70, 245, 0.1);
+  transform: translateY(-2px);
+}
+.pg-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-sm);
+  background: var(--blue-bg);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.pg-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.pg-card-role {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin: 0 0 8px;
+}
+.pg-card-desc {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0;
+}
+.pg-card a {
+  color: var(--blue);
+  text-decoration: none;
+  word-break: break-word;
+}
+.pg-card a:hover {
+  text-decoration: underline;
+}
+
+/* Organigrama simple */
+.pg-org {
+  margin-top: 36px;
+  text-align: center;
+}
+.pg-org-root {
+  display: inline-block;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: var(--r-md);
+  margin-bottom: 28px;
+}
+.pg-org-children {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+.pg-org-node {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* CTA */
+.pg-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--blue);
+  border-radius: var(--r-sm);
+  padding: 12px 24px;
+  text-decoration: none;
+  transition: background 0.17s;
+  margin-top: 8px;
+}
+.pg-cta:hover {
+  background: var(--blue-dark);
+}
+
+@media (max-width: 860px) {
+  .pg-grid--3,
+  .pg-grid--4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .pg-container {
+    padding: 0 18px;
+  }
+  .pg-grid--3,
+  .pg-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}

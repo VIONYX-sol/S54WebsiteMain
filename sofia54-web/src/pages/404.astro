@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/pages.css';
+---
+
+<Base title="Página no encontrada" path="/404/" noindex={true}>
+  <div class="pg">
+    <section class="pg-section" style="text-align:center;padding:120px 0;">
+      <div class="pg-container pg-container--narrow">
+        <p style="font-size:4rem;font-weight:800;color:#2246f5;margin:0;letter-spacing:-0.04em;">404</p>
+        <h1 class="pg-section-title pg-section-title--center" style="margin-top:8px;">Página no encontrada</h1>
+        <p class="pg-hero-sub" style="margin:0 auto 28px;">
+          La página que buscas no existe o se ha movido.
+        </p>
+        <a class="pg-cta" href="/">Volver al inicio →</a>
+      </div>
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/pages.css';
+
+const description =
+  'Grupo Sofía54: más de 40 años gestionando y alquilando naves industriales propias en la Comunidad de Madrid. Conoce nuestra historia, estructura y equipo directivo.';
+
+// Sociedades del grupo (organigrama)
+const sociedades = [
+  'Inversora de Arriendos Inmobiliarios S.L.',
+  'Sofía 54 S.L.',
+  'Isla Cristina Inversiones S.L.',
+  'C.B La Granja 22',
+];
+
+// Consejo directivo
+const consejo = [
+  { name: 'Jose Antonio Martín Borregón', role: 'Consejero Delegado' },
+  { name: 'Juan Carlos Martín Borregón', role: 'Director Comercial y Técnico' },
+  { name: 'Jose Ramón Corregel Barrio', role: 'Secretario no Consejero' },
+];
+
+// Diferenciales
+const valores = [
+  {
+    title: 'Gestión Directa y Transparente',
+    desc: 'Trato personal y ágil, sin intermediarios.',
+  },
+  {
+    title: 'Naves Listas para Usar',
+    desc: 'Reformadas, seguras y operativas desde el primer día.',
+  },
+  {
+    title: 'Adaptabilidad por Empresa',
+    desc: 'Espacios versátiles para cualquier tipo de actividad.',
+  },
+];
+---
+
+<Base title="Sobre Nosotros" description={description} path="/sobre-nosotros/">
+  <div class="pg">
+    <!-- HERO -->
+    <header class="pg-hero">
+      <div class="pg-container">
+        <span class="pg-eyebrow"><span></span>Sobre Nosotros</span>
+        <h1 class="pg-hero-title">Sobre Nosotros</h1>
+        <p class="pg-hero-sub">
+          Somos un grupo empresarial con más de <strong>cuatro décadas de
+          trayectoria</strong> en el sector logístico-industrial, especializado en
+          gestionar y alquilar naves propias en la Comunidad de Madrid.
+        </p>
+      </div>
+    </header>
+
+    <!-- HISTORIA -->
+    <section class="pg-section">
+      <div class="pg-container">
+        <h2 class="pg-section-title">Historia y Trayectoria</h2>
+        <div class="pg-prose">
+          <p>
+            Con más de <strong>40 años de experiencia</strong>, el Grupo SOFIA 54
+            ha sido un referente en el sector industrial madrileño, evolucionando
+            desde sus inicios hasta convertirse en uno de los grupos de gestión de
+            espacios industriales más consolidados y profesionales de la Comunidad
+            de Madrid.
+          </p>
+          <p>
+            Desde la constitución de sus primeras sociedades, el grupo ha apostado
+            por la <strong>calidad, la cercanía con el cliente y el compromiso con
+            el desarrollo económico local</strong>.
+          </p>
+          <p>
+            El Grupo fue pionero en la ordenación urbanística del polígono de
+            Alcobendas desde sus inicios, <strong>poniendo nombre a las
+            principales calles</strong> donde hoy se encuentran sus naves:
+            Aragoneses, La Granja, Valdelaparra, entre otras.
+          </p>
+        </div>
+        <a class="pg-cta" href="/contacto/">Contáctanos →</a>
+      </div>
+    </section>
+
+    <!-- ESTRUCTURA -->
+    <section class="pg-section pg-section--surface">
+      <div class="pg-container">
+        <h2 class="pg-section-title pg-section-title--center">Estructura del Grupo</h2>
+        <p class="pg-hero-sub" style="margin:0 auto;text-align:center;">
+          Organizamos nuestra gestión a través de las sociedades del grupo.
+        </p>
+        <div class="pg-org">
+          <div class="pg-org-root">Grupo Sofía 54</div>
+          <div class="pg-org-children">
+            {sociedades.map((s) => <div class="pg-org-node">{s}</div>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSEJO DIRECTIVO -->
+    <section class="pg-section">
+      <div class="pg-container">
+        <h2 class="pg-section-title">Equipo Directivo</h2>
+        <div class="pg-prose">
+          <p>
+            El Grupo SOFIA54 cuenta con un equipo directivo consolidado y
+            profesional, así como con consejos de administración en cada una de sus
+            sociedades. A continuación, los principales miembros del Consejo
+            Directivo del Grupo.
+          </p>
+        </div>
+        <div class="pg-grid pg-grid--3">
+          {
+            consejo.map((p) => (
+              <article class="pg-card">
+                <div class="pg-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <h3 class="pg-card-title">{p.name}</h3>
+                <p class="pg-card-role">{p.role}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- VALORES -->
+    <section class="pg-section pg-section--surface">
+      <div class="pg-container">
+        <h2 class="pg-section-title">Valores Corporativos</h2>
+        <div class="pg-prose">
+          <p>
+            En SOFIA54 creemos que el crecimiento de nuestros clientes es el mejor
+            reflejo de nuestro trabajo. Con más de 40 años de experiencia en el
+            sector industrial, hemos construido relaciones sólidas basadas en la
+            <strong>seriedad, la adaptabilidad y el trato directo</strong>.
+          </p>
+          <p>
+            Mantenemos relaciones de largo plazo con nuestros inquilinos, que
+            confían en nosotros durante años gracias a la calidad de nuestros
+            espacios y nuestro compromiso diario.
+          </p>
+          <p>
+            Ofrecemos soluciones reales y espacios completamente personalizados
+            porque entendemos que cada empresa tiene una historia, unos retos y una
+            forma de trabajar única. Nuestra prioridad es ofrecer estabilidad,
+            flexibilidad y un acompañamiento profesional desde el primer contacto.
+          </p>
+        </div>
+
+        <div class="sb-claim">
+          <span>Escuchamos.</span>
+          <span>Nos adaptamos.</span>
+          <span>Respondemos.</span>
+        </div>
+        <p class="sb-claim-foot">Así trabajamos. Así crecemos contigo.</p>
+
+        <div class="pg-grid pg-grid--3">
+          {
+            valores.map((v) => (
+              <article class="pg-card">
+                <h3 class="pg-card-title">{v.title}</h3>
+                <p class="pg-card-desc">{v.desc}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .sb-claim {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 36px;
+    margin: 28px 0 8px;
+  }
+  .sb-claim span {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #2246f5;
+  }
+  .sb-claim-foot {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1d2e;
+    margin: 0 0 8px;
+  }
+</style>

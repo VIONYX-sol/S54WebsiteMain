@@ -1,0 +1,18 @@
+{
+  "name": "gruposofia54-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web corporativa Grupo Sofía54 — sitio estático en Astro, desplegado en Azure Static Web Apps. Infraestructura por VIONYX Solutions.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.2",
+    "astro": "^4.16.18"
+  }
+}
