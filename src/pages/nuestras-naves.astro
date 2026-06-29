@@ -312,6 +312,22 @@ const DATA = data.complejos.map((cp) => ({
   gap: 6px;
   margin-top: 14px;
 }
+.gs54-hero-video-btn {
+  display: inline-flex;
+  margin-top: 14px;
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 8px 13px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.gs54-hero-video-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
 .gs54-hero-badge {
   display: inline-flex;
   align-items: center;
@@ -1066,7 +1082,7 @@ function renderAll() {
   cont.innerHTML = visible.map(cp => {
     const badgesHtml  = cp.badges.map(b=>`<span class="gs54-hero-badge">${b.i} ${b.t}</span>`).join('');
     const heroMedia   = cp.video
-      ? `<video autoplay muted loop playsinline preload="none" src="${cp.video}" data-lightbox-src="${cp.video}" data-lightbox-type="video" data-lightbox-title="${cp.nombre} — Vídeo del complejo" class="gs54-lbx-trigger" style="cursor:zoom-in;"></video>`
+      ? `<video autoplay muted loop playsinline preload="metadata" src="${cp.video}" data-lightbox-src="${cp.video}" data-lightbox-type="video" data-lightbox-title="${cp.nombre} — Vídeo del complejo" class="gs54-lbx-trigger" style="cursor:zoom-in;"></video>`
       : '';
     // Fotos del panel lateral con lightbox
     const allComplejoMedia = [...(cp.video ? [{src:cp.video, type:'video', title:`${cp.nombre} — Vídeo`}] : []), ...cp.fotos.map(f=>({src:f, type:'img', title:`${cp.nombre}`}))];
@@ -1091,6 +1107,7 @@ function renderAll() {
               <div class="gs54-hero-eyebrow">Complejo Industrial</div>
               <div class="gs54-hero-nombre">${cp.nombre}</div>
               <div class="gs54-hero-badges">${badgesHtml}</div>
+              ${cp.video ? `<button class="gs54-hero-video-btn gs54-lbx-trigger" data-lightbox-src="${cp.video}" data-lightbox-type="video" data-lightbox-title="${cp.nombre} — Vídeo del complejo">Ver vídeo en grande</button>` : ''}
             </div>
           </div>
           <div class="gs54-fotos-panel">${fotosHtml}</div>

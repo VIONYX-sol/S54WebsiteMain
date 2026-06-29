@@ -75,30 +75,20 @@ export const AREAS_SERVED = [
 /**
  * BASE DE MEDIOS (imágenes, vídeos, PDFs de fichas y planos).
  *
- * ⚠️ ESTADO ACTUAL: apunta al repositorio de GitHub vía raw.githubusercontent.com.
- *    Esto FUNCIONA pero NO es óptimo para producción (sin CDN real, sin SLA,
- *    GitHub limita el hotlinking y NO sirve vídeo con range-requests → vídeo lento).
- *
- * ✅ MIGRACIÓN RECOMENDADA: subir el material a Azure Blob Storage + Azure CDN
- *    (o Cloudflare R2/Stream para vídeo) y cambiar AQUÍ la constante. El resto de
- *    la web no necesita tocarse: todas las URLs de medios se derivan de esta base.
- *
- *    Ejemplo tras la migración:
- *    export const MEDIA_BASE = 'https://cdn.gruposofia54.com/complejos/';
+ * Base actual: material local del repositorio (servido por Azure Static Web Apps).
+ * Si en el futuro se migra a CDN externa, basta con cambiar esta constante.
  */
 export const MEDIA_BASE =
-  'https://raw.githubusercontent.com/VIONYX-sol/VYX-s54_website-nuestras_naves/refs/heads/main/Complejos/';
+  '/materialvisual/VYX-s54_website-nuestras_naves-main/Complejos/';
 
 /**
  * Logotipo. Los PNG actuales están en el repo de WordPress; cópialos a /public/assets/.
  * (Ver README → "Activos pendientes de copiar".)
  */
 export const BRAND = {
-  // Logo blanco (pie / fondo oscuro). Provisional en SVG; sustituir por el PNG oficial.
-  logoWhite: '/assets/logo-blanco.svg',
-  // Logo a color (cabecera sobre fondo claro). Provisional en SVG.
-  logoDark: '/assets/logo-azul.svg',
-  favicon: '/favicon.svg',
+  logoWhite: '/assets/logo-blanco.png',
+  logoDark: '/assets/logo-azul.png',
+  favicon: '/favicon.png',
   ogImage: '/assets/og-default.jpg', // 1200×630 para compartir en redes (pendiente de crear)
 } as const;
 
@@ -114,4 +104,4 @@ export const BRAND = {
  * funciona igualmente: compone el mensaje y abre el cliente de correo del
  * usuario (mailto:) hacia CONTACT.email. Así nunca queda "muerto".
  */
-export const CONTACT_FORM_ENDPOINT = '';
+export const CONTACT_FORM_ENDPOINT = '/api/contact';
