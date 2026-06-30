@@ -1,83 +1,126 @@
 ---
 import Base from '../layouts/Base.astro';
-import '../styles/pages.css';
-import { MEDIA_BASE } from '../data/site';
+import { CONTACT, MEDIA_BASE } from '../data/site';
 
 const description =
   'Grupo Sofía54: más de 40 años gestionando y alquilando naves industriales propias en la Comunidad de Madrid. Conoce nuestra historia, estructura y equipo directivo.';
+
+const historia = [
+  'Más de 40 años de trayectoria en el sector logístico-industrial de Madrid.',
+  'Pioneros en la ordenación urbanística del polígono de Alcobendas.',
+  'Cartera consolidada de naves propias y reformadas en ubicaciones estratégicas.',
+  'Gestión patrimonial con visión de largo plazo y trato directo al cliente.',
+];
 
 const sociedades = [
   'Inversora de Arriendos Inmobiliarios S.L.',
   'Sofía 54 S.L.',
   'Isla Cristina Inversiones S.L.',
-  'C.B La Granja 22',
-];
-
-const consejo = [
-  { name: 'Jose Antonio Martín Borregón', role: 'Consejero Delegado' },
-  { name: 'Juan Carlos Martín Borregón', role: 'Director Comercial y Técnico' },
-  { name: 'Jose Ramón Corregel Barrio', role: 'Secretario no Consejero' },
+  'C.B. La Granja 22',
 ];
 
 const valores = [
   {
-    title: 'Gestión Directa y Transparente',
-    desc: 'Trato personal y ágil, sin intermediarios.',
+    title: 'Gestión directa y transparente',
+    text: 'Atención ágil y cercana, sin intermediarios y con decisiones rápidas.',
   },
   {
-    title: 'Naves Listas para Usar',
-    desc: 'Reformadas, seguras y operativas desde el primer día.',
+    title: 'Naves listas para operar',
+    text: 'Inmuebles rehabilitados, seguros y preparados para entrar desde el primer día.',
   },
   {
-    title: 'Adaptabilidad por Empresa',
-    desc: 'Espacios versátiles para cualquier tipo de actividad.',
+    title: 'Relación a largo plazo',
+    text: 'Acompañamos a cada empresa en su crecimiento con soluciones estables y flexibles.',
   },
 ];
 
-const timeline = [
-  'Más de 40 años de trayectoria en el sector logístico-industrial.',
-  'Pioneros en la ordenación urbanística del polígono de Alcobendas.',
-  'Cartera consolidada de naves propias en ubicaciones estratégicas.',
-  'Relaciones de largo plazo con empresas e inquilinos de referencia.',
+const consejo = [
+  {
+    sociedad: 'Isla Cristina Inversiones S.L.',
+    role: 'Administración',
+    image: '/estructura_consejos/consejo-isla-cristina.jpg',
+  },
+  {
+    sociedad: 'Sofía 54 S.L.',
+    role: 'Administración',
+    image: '/estructura_consejos/consejo-sofia54.jpg',
+  },
+  {
+    sociedad: 'Inversora de Arriendos Inmobiliarios S.L.',
+    role: 'Administración',
+    image: '/estructura_consejos/consejo-inversora.jpg',
+  },
 ];
 
-const aboutImage = `${MEDIA_BASE}Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-005.jpg`;
+const heroImage = `${MEDIA_BASE}Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-005.jpg`;
+const historiaImage = `${MEDIA_BASE}La%20Granja/Material%20Complejo/Grupo_Sofia54_C_Granja-010.jpg`;
+const trayectoriaImage = `${MEDIA_BASE}Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-003.jpg`;
 ---
 
 <Base title="Sobre Nosotros" description={description} path="/sobre-nosotros/">
-  <div class="pg sb">
-    <header class="pg-hero sb-hero">
-      <div class="pg-container sb-hero-grid">
+  <main class="about">
+    <section class="hero">
+      <div class="container hero-grid">
         <div>
-          <span class="pg-eyebrow"><span></span>Sobre Nosotros</span>
-          <h1 class="pg-hero-title">Más de cuatro décadas impulsando actividad industrial</h1>
-          <p class="pg-hero-sub">
-            Somos un grupo empresarial especializado en gestionar y alquilar naves
-            industriales propias en la Comunidad de Madrid, con estructura sólida,
-            visión de largo plazo y trato directo.
+          <p class="eyebrow">Grupo Sofía54</p>
+          <h1>Más de cuatro décadas impulsando actividad industrial en Madrid</h1>
+          <p class="lead">
+            Somos un grupo empresarial especializado en la gestión y alquiler de naves
+            industriales propias. Construimos relaciones estables con cada cliente,
+            aportando solvencia patrimonial, experiencia técnica y atención directa.
           </p>
-          <a class="pg-cta" href="/contacto/">Hablar con el equipo</a>
+          <a class="cta" href="/contacto/">Contactar con el equipo</a>
         </div>
-        <img src={aboutImage} alt="Complejo industrial Grupo Sofía54" loading="lazy" />
+        <img src={heroImage} alt="Complejo industrial de Grupo Sofía54" loading="eager" />
       </div>
-    </header>
+    </section>
 
-    <section class="pg-section">
-      <div class="pg-container">
-        <h2 class="pg-section-title">Historia y trayectoria</h2>
-        <div class="pg-prose">
+    <section class="section">
+      <div class="container split">
+        <div>
+          <h2>Historia y trayectoria</h2>
           <p>
-            Con más de <strong>40 años de experiencia</strong>, Grupo SOFIA54 se ha
-            consolidado como un referente en el tejido industrial madrileño.
+            Grupo SOFIA54 se ha consolidado como un referente en el tejido
+            logístico-industrial madrileño gracias a una estrategia de crecimiento
+            prudente, inversión continuada y gestión de proximidad.
           </p>
+          <ul class="timeline">
+            {
+              historia.map((item) => (
+                <li>{item}</li>
+              ))
+            }
+          </ul>
         </div>
+        <img src={historiaImage} alt="Vista general del complejo La Granja" loading="lazy" />
+      </div>
+    </section>
 
-        <div class="sb-timeline">
+    <section class="section surface">
+      <div class="container">
+        <h2>Estructura societaria</h2>
+        <p class="intro">
+          Operamos mediante sociedades especializadas para asegurar estabilidad,
+          agilidad operativa y continuidad de servicio.
+        </p>
+        <div class="sociedades">
+          {sociedades.map((sociedad) => <article>{sociedad}</article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Consejos de administración</h2>
+        <div class="consejo-grid">
           {
-            timeline.map((item, idx) => (
-              <article>
-                <span>{String(idx + 1).padStart(2, '0')}</span>
-                <p>{item}</p>
+            consejo.map((item) => (
+              <article class="consejo-card">
+                <img src={item.image} alt={`Consejo de ${item.sociedad}`} loading="lazy" />
+                <div>
+                  <h3>{item.sociedad}</h3>
+                  <p>{item.role}</p>
+                </div>
               </article>
             ))
           }
@@ -85,142 +128,294 @@ const aboutImage = `${MEDIA_BASE}Aragoneses/Material-Complejo/Grupo_Sofia54_C_Ar
       </div>
     </section>
 
-    <section class="pg-section pg-section--surface">
-      <div class="pg-container">
-        <h2 class="pg-section-title pg-section-title--center">Estructura del Grupo</h2>
-        <p class="pg-hero-sub" style="margin:0 auto;text-align:center;max-width:720px;">
-          Organizamos nuestra gestión mediante sociedades especializadas para dar
-          estabilidad, agilidad operativa y continuidad a largo plazo.
-        </p>
-        <div class="pg-org">
-          <div class="pg-org-root">Grupo Sofía 54</div>
-          <div class="pg-org-children">
-            {sociedades.map((s) => <div class="pg-org-node">{s}</div>)}
+    <section class="section surface">
+      <div class="container split">
+        <div>
+          <h2>Valores corporativos</h2>
+          <div class="values">
+            {
+              valores.map((valor) => (
+                <article>
+                  <h3>{valor.title}</h3>
+                  <p>{valor.text}</p>
+                </article>
+              ))
+            }
           </div>
         </div>
+        <img src={trayectoriaImage} alt="Naves industriales de Grupo Sofía54" loading="lazy" />
       </div>
     </section>
 
-    <section class="pg-section">
-      <div class="pg-container">
-        <h2 class="pg-section-title">Equipo directivo</h2>
-        <div class="pg-grid pg-grid--3">
-          {
-            consejo.map((p) => (
-              <article class="pg-card">
-                <div class="pg-card-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-                <h3 class="pg-card-title">{p.name}</h3>
-                <p class="pg-card-role">{p.role}</p>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <section class="pg-section pg-section--surface">
-      <div class="pg-container">
-        <h2 class="pg-section-title">Valores corporativos</h2>
-        <div class="pg-prose">
+    <section class="section contact">
+      <div class="container contact-card">
+        <div>
+          <h2>¿Hablamos?</h2>
           <p>
-            En SOFIA54 combinamos experiencia, rigor y adaptabilidad para ofrecer
-            soluciones industriales estables y personalizadas.
+            Si necesitas una nave industrial para tu actividad, nuestro equipo te
+            orienta de forma directa y personalizada.
           </p>
         </div>
-
-        <div class="sb-claim">
-          <span>Escuchamos.</span>
-          <span>Nos adaptamos.</span>
-          <span>Respondemos.</span>
-        </div>
-
-        <div class="pg-grid pg-grid--3">
-          {
-            valores.map((v) => (
-              <article class="pg-card">
-                <h3 class="pg-card-title">{v.title}</h3>
-                <p class="pg-card-desc">{v.desc}</p>
-              </article>
-            ))
-          }
-        </div>
+        <ul>
+          <li>
+            <strong>Teléfono:</strong>
+            <a href={`tel:${CONTACT.phoneRaw}`}>{CONTACT.phone}</a>
+          </li>
+          <li>
+            <strong>Email:</strong>
+            <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+          </li>
+          <li>
+            <strong>Dirección:</strong>
+            {CONTACT.address.street}, {CONTACT.address.postalCode} {CONTACT.address.city}
+          </li>
+        </ul>
       </div>
     </section>
-  </div>
+  </main>
 </Base>
 
 <style>
-  .sb-hero {
-    background: linear-gradient(180deg, #fff, #f6f8fc);
+  .about {
+    color: var(--ink);
   }
-  .sb-hero-grid {
+
+  .container {
+    width: min(1120px, calc(100% - 2.5rem));
+    margin: 0 auto;
+  }
+
+  .hero {
+    background: linear-gradient(180deg, #fff 0%, var(--surface) 100%);
+    padding: clamp(3rem, 8vw, 5rem) 0;
+  }
+
+  .hero-grid,
+  .split {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 28px;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 2rem;
     align-items: center;
   }
-  .sb-hero-grid img {
-    width: 100%;
-    min-height: 340px;
-    object-fit: cover;
-    border-radius: 18px;
-    box-shadow: 0 20px 45px rgba(26, 29, 46, 0.14);
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--blue);
   }
-  .sb-timeline {
-    margin-top: 26px;
-    display: grid;
-    gap: 12px;
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    line-height: 1.16;
+    margin: 0;
   }
-  .sb-timeline article {
-    display: grid;
-    grid-template-columns: 46px 1fr;
-    gap: 14px;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #e0e3ef;
-    border-radius: 12px;
-    padding: 14px 16px;
+
+  h1 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    max-width: 18ch;
   }
-  .sb-timeline span {
+
+  h2 {
+    font-size: clamp(1.55rem, 3vw, 2.1rem);
+    margin-bottom: 0.9rem;
+  }
+
+  h3 {
+    font-size: 1.06rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .lead {
+    margin-top: 1rem;
+    max-width: 62ch;
+  }
+
+  .cta {
+    margin-top: 1.5rem;
     display: inline-flex;
-    width: 34px;
-    height: 34px;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: #e8eefa;
-    color: #2246f5;
-    font-size: 0.76rem;
+    gap: 0.5rem;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
     font-weight: 700;
+    border-radius: 999px;
+    padding: 0.8rem 1.2rem;
+    transition: background-color 0.2s ease;
   }
-  .sb-timeline p {
+
+  .cta:hover {
+    background: var(--blue-dark);
+  }
+
+  .hero img,
+  .split img {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 45px rgba(26, 29, 46, 0.14);
+    object-fit: cover;
+    min-height: 280px;
+  }
+
+  .section {
+    padding: clamp(2.5rem, 7vw, 4.5rem) 0;
+  }
+
+  .surface {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 1.35rem 0 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .timeline li {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 0.75rem;
+    padding: 0.9rem 1rem;
+    color: var(--ink-soft);
+  }
+
+  .intro {
+    max-width: 70ch;
+  }
+
+  .sociedades {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .sociedades article,
+  .values article,
+  .consejo-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 0.9rem;
+  }
+
+  .sociedades article {
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .consejo-grid {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .consejo-card {
+    overflow: hidden;
+  }
+
+  .consejo-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .consejo-card div {
+    padding: 0.95rem;
+  }
+
+  .consejo-card p {
+    margin-top: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .values {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .values article {
+    padding: 1rem;
+  }
+
+  .values p {
+    margin-top: 0.45rem;
+  }
+
+  .contact {
+    background: #fff;
+  }
+
+  .contact-card {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: clamp(1.1rem, 3vw, 1.6rem);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+  }
+
+  .contact-card ul {
     margin: 0;
-    color: #5a5f78;
-    font-size: 0.92rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.65rem;
+    color: var(--ink-soft);
   }
-  .sb-claim {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 22px;
-    margin: 28px 0 10px;
+
+  .contact-card a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
   }
-  .sb-claim span {
-    font-size: clamp(1.22rem, 2.4vw, 1.8rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: #2246f5;
+
+  .contact-card a:hover {
+    text-decoration: underline;
   }
-  @media (max-width: 900px) {
-    .sb-hero-grid {
+
+  @media (max-width: 980px) {
+    .hero-grid,
+    .split,
+    .contact-card {
       grid-template-columns: 1fr;
     }
-    .sb-hero-grid img {
-      min-height: 260px;
+
+    .consejo-grid,
+    .sociedades {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .container {
+      width: min(1120px, calc(100% - 1.5rem));
+    }
+
+    .consejo-grid,
+    .sociedades {
+      grid-template-columns: 1fr;
     }
   }
 </style>
