@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { CONTACT, CONTACT_FORM_ENDPOINT } from '../data/site';
+import { CONTACT, CONTACT_API_ENDPOINT } from '../data/site';
 import '../styles/pages.css';
 
 const description =
@@ -270,7 +270,7 @@ const mapsQuery = encodeURIComponent(
   }
 </style>
 
-<script define:vars={{ endpoint: CONTACT_FORM_ENDPOINT, to: CONTACT.email }}>
+<script define:vars={{ endpoint: CONTACT_API_ENDPOINT, to: CONTACT.email }}>
   const form = document.getElementById('ct-form');
   const status = document.getElementById('ct-status');
 

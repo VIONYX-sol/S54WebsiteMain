@@ -81,6 +81,10 @@ export const AREAS_SERVED = [
 export const MEDIA_BASE =
   '/materialvisual/VYX-s54_website-nuestras_naves-main/Complejos/';
 
+/** Vídeo hero de la página de inicio */
+export const HERO_VIDEO =
+  '/materialvisual/VYX-s54_website-nuestras_naves-main/Inicio/video-banner_inicial.mp4';
+
 /**
  * Logotipo. Los PNG actuales están en el repo de WordPress; cópialos a /public/assets/.
  * (Ver README → "Activos pendientes de copiar".)
@@ -104,4 +108,5 @@ export const BRAND = {
  * funciona igualmente: compone el mensaje y abre el cliente de correo del
  * usuario (mailto:) hacia CONTACT.email. Así nunca queda "muerto".
  */
-export const CONTACT_FORM_ENDPOINT = '/api/contact';
+/** Endpoint de la Azure Function de contacto integrada en SWA */
+export const CONTACT_API_ENDPOINT = '/api/contact';
