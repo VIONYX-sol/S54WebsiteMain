@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import '../styles/pages.css';
+import { MEDIA_BASE } from '../data/site';
 
 const description =
   'Grupo Sofía54: más de 40 años gestionando y alquilando naves industriales propias en la Comunidad de Madrid. Conoce nuestra historia, estructura y equipo directivo.';
 
-// Sociedades del grupo (organigrama)
 const sociedades = [
   'Inversora de Arriendos Inmobiliarios S.L.',
   'Sofía 54 S.L.',
@@ -13,14 +13,12 @@ const sociedades = [
   'C.B La Granja 22',
 ];
 
-// Consejo directivo
 const consejo = [
   { name: 'Jose Antonio Martín Borregón', role: 'Consejero Delegado' },
   { name: 'Juan Carlos Martín Borregón', role: 'Director Comercial y Técnico' },
   { name: 'Jose Ramón Corregel Barrio', role: 'Secretario no Consejero' },
 ];
 
-// Diferenciales
 const valores = [
   {
     title: 'Gestión Directa y Transparente',
@@ -35,57 +33,64 @@ const valores = [
     desc: 'Espacios versátiles para cualquier tipo de actividad.',
   },
 ];
+
+const timeline = [
+  'Más de 40 años de trayectoria en el sector logístico-industrial.',
+  'Pioneros en la ordenación urbanística del polígono de Alcobendas.',
+  'Cartera consolidada de naves propias en ubicaciones estratégicas.',
+  'Relaciones de largo plazo con empresas e inquilinos de referencia.',
+];
+
+const aboutImage = `${MEDIA_BASE}Aragoneses/Material-Complejo/Grupo_Sofia54_C_Aragoneses-005.jpg`;
 ---
 
 <Base title="Sobre Nosotros" description={description} path="/sobre-nosotros/">
-  <div class="pg">
-    <!-- HERO -->
-    <header class="pg-hero">
-      <div class="pg-container">
-        <span class="pg-eyebrow"><span></span>Sobre Nosotros</span>
-        <h1 class="pg-hero-title">Sobre Nosotros</h1>
-        <p class="pg-hero-sub">
-          Somos un grupo empresarial con más de <strong>cuatro décadas de
-          trayectoria</strong> en el sector logístico-industrial, especializado en
-          gestionar y alquilar naves propias en la Comunidad de Madrid.
-        </p>
+  <div class="pg sb">
+    <header class="pg-hero sb-hero">
+      <div class="pg-container sb-hero-grid">
+        <div>
+          <span class="pg-eyebrow"><span></span>Sobre Nosotros</span>
+          <h1 class="pg-hero-title">Más de cuatro décadas impulsando actividad industrial</h1>
+          <p class="pg-hero-sub">
+            Somos un grupo empresarial especializado en gestionar y alquilar naves
+            industriales propias en la Comunidad de Madrid, con estructura sólida,
+            visión de largo plazo y trato directo.
+          </p>
+          <a class="pg-cta" href="/contacto/">Hablar con el equipo</a>
+        </div>
+        <img src={aboutImage} alt="Complejo industrial Grupo Sofía54" loading="lazy" />
       </div>
     </header>
 
-    <!-- HISTORIA -->
     <section class="pg-section">
       <div class="pg-container">
-        <h2 class="pg-section-title">Historia y Trayectoria</h2>
+        <h2 class="pg-section-title">Historia y trayectoria</h2>
         <div class="pg-prose">
           <p>
-            Con más de <strong>40 años de experiencia</strong>, el Grupo SOFIA 54
-            ha sido un referente en el sector industrial madrileño, evolucionando
-            desde sus inicios hasta convertirse en uno de los grupos de gestión de
-            espacios industriales más consolidados y profesionales de la Comunidad
-            de Madrid.
-          </p>
-          <p>
-            Desde la constitución de sus primeras sociedades, el grupo ha apostado
-            por la <strong>calidad, la cercanía con el cliente y el compromiso con
-            el desarrollo económico local</strong>.
-          </p>
-          <p>
-            El Grupo fue pionero en la ordenación urbanística del polígono de
-            Alcobendas desde sus inicios, <strong>poniendo nombre a las
-            principales calles</strong> donde hoy se encuentran sus naves:
-            Aragoneses, La Granja, Valdelaparra, entre otras.
+            Con más de <strong>40 años de experiencia</strong>, Grupo SOFIA54 se ha
+            consolidado como un referente en el tejido industrial madrileño.
           </p>
         </div>
-        <a class="pg-cta" href="/contacto/">Contáctanos →</a>
+
+        <div class="sb-timeline">
+          {
+            timeline.map((item, idx) => (
+              <article>
+                <span>{String(idx + 1).padStart(2, '0')}</span>
+                <p>{item}</p>
+              </article>
+            ))
+          }
+        </div>
       </div>
     </section>
 
-    <!-- ESTRUCTURA -->
     <section class="pg-section pg-section--surface">
       <div class="pg-container">
         <h2 class="pg-section-title pg-section-title--center">Estructura del Grupo</h2>
-        <p class="pg-hero-sub" style="margin:0 auto;text-align:center;">
-          Organizamos nuestra gestión a través de las sociedades del grupo.
+        <p class="pg-hero-sub" style="margin:0 auto;text-align:center;max-width:720px;">
+          Organizamos nuestra gestión mediante sociedades especializadas para dar
+          estabilidad, agilidad operativa y continuidad a largo plazo.
         </p>
         <div class="pg-org">
           <div class="pg-org-root">Grupo Sofía 54</div>
@@ -96,18 +101,9 @@ const valores = [
       </div>
     </section>
 
-    <!-- CONSEJO DIRECTIVO -->
     <section class="pg-section">
       <div class="pg-container">
-        <h2 class="pg-section-title">Equipo Directivo</h2>
-        <div class="pg-prose">
-          <p>
-            El Grupo SOFIA54 cuenta con un equipo directivo consolidado y
-            profesional, así como con consejos de administración en cada una de sus
-            sociedades. A continuación, los principales miembros del Consejo
-            Directivo del Grupo.
-          </p>
-        </div>
+        <h2 class="pg-section-title">Equipo directivo</h2>
         <div class="pg-grid pg-grid--3">
           {
             consejo.map((p) => (
@@ -127,27 +123,13 @@ const valores = [
       </div>
     </section>
 
-    <!-- VALORES -->
     <section class="pg-section pg-section--surface">
       <div class="pg-container">
-        <h2 class="pg-section-title">Valores Corporativos</h2>
+        <h2 class="pg-section-title">Valores corporativos</h2>
         <div class="pg-prose">
           <p>
-            En SOFIA54 creemos que el crecimiento de nuestros clientes es el mejor
-            reflejo de nuestro trabajo. Con más de 40 años de experiencia en el
-            sector industrial, hemos construido relaciones sólidas basadas en la
-            <strong>seriedad, la adaptabilidad y el trato directo</strong>.
-          </p>
-          <p>
-            Mantenemos relaciones de largo plazo con nuestros inquilinos, que
-            confían en nosotros durante años gracias a la calidad de nuestros
-            espacios y nuestro compromiso diario.
-          </p>
-          <p>
-            Ofrecemos soluciones reales y espacios completamente personalizados
-            porque entendemos que cada empresa tiene una historia, unos retos y una
-            forma de trabajar única. Nuestra prioridad es ofrecer estabilidad,
-            flexibilidad y un acompañamiento profesional desde el primer contacto.
+            En SOFIA54 combinamos experiencia, rigor y adaptabilidad para ofrecer
+            soluciones industriales estables y personalizadas.
           </p>
         </div>
 
@@ -156,7 +138,6 @@ const valores = [
           <span>Nos adaptamos.</span>
           <span>Respondemos.</span>
         </div>
-        <p class="sb-claim-foot">Así trabajamos. Así crecemos contigo.</p>
 
         <div class="pg-grid pg-grid--3">
           {
@@ -174,22 +155,72 @@ const valores = [
 </Base>
 
 <style>
+  .sb-hero {
+    background: linear-gradient(180deg, #fff, #f6f8fc);
+  }
+  .sb-hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .sb-hero-grid img {
+    width: 100%;
+    min-height: 340px;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(26, 29, 46, 0.14);
+  }
+  .sb-timeline {
+    margin-top: 26px;
+    display: grid;
+    gap: 12px;
+  }
+  .sb-timeline article {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 14px;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e3ef;
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .sb-timeline span {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e8eefa;
+    color: #2246f5;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+  .sb-timeline p {
+    margin: 0;
+    color: #5a5f78;
+    font-size: 0.92rem;
+  }
   .sb-claim {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px 36px;
-    margin: 28px 0 8px;
+    gap: 12px 22px;
+    margin: 28px 0 10px;
   }
   .sb-claim span {
-    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-size: clamp(1.22rem, 2.4vw, 1.8rem);
     font-weight: 800;
     letter-spacing: -0.02em;
     color: #2246f5;
   }
-  .sb-claim-foot {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1a1d2e;
-    margin: 0 0 8px;
+  @media (max-width: 900px) {
+    .sb-hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .sb-hero-grid img {
+      min-height: 260px;
+    }
   }
 </style>

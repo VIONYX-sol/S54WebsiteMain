@@ -137,11 +137,10 @@ validado.
 
 ## 6. Medios (fotos, vídeos, PDFs): el cambio más importante
 
-**Estado actual:** todo el material vive en el repo
-`VIONYX-sol/VYX-s54_website-nuestras_naves` y se sirve por
-`raw.githubusercontent.com`. La constante que lo controla es `MEDIA_BASE` en
-`src/data/site.ts`. Funciona, pero **no es apto para producción a escala** (sin
-CDN real, sin SLA, vídeo lento).
+**Estado actual:** el material visual se sirve ya desde este mismo repositorio
+(`public/materialvisual/...`) para que Azure lo entregue directamente sin
+dependencia de enlaces de GitHub. La constante que lo controla es `MEDIA_BASE`
+en `src/data/site.ts`.
 
 **Recomendación (hacer al escalar a las 60+ naves):**
 
@@ -235,15 +234,16 @@ Application Insights (y entonces declarar la cookie en la política).
 
 ## 11. Formulario de contacto
 
-La web es estática (no hay PHP). El formulario de `/contacto/` está preparado
-para enviar a un backend definido en `CONTACT_FORM_ENDPOINT` (`src/data/site.ts`):
+La web es estática (no hay PHP). El formulario de `/contacto/` está conectado a
+`/api/contact` (Azure Function en `api/contact/`) y envía:
 
-- **Mientras ese valor esté vacío**, el formulario **igual funciona**: compone el
-  mensaje y abre el gestor de correo del usuario hacia `administracion@…`. Nunca
-  queda "muerto".
-- **Para recibir los envíos como email automático**, pon en
-  `CONTACT_FORM_ENDPOINT` la URL de una **Azure Function** o de un servicio tipo
-  **Formspree / Web3Forms** (alta en minutos).
+- email interno a `administracion@gruposofia54.com` (o `CONTACT_ADMIN_EMAIL`)
+- email de confirmación al cliente con plantilla corporativa
+
+Variables de entorno necesarias en Azure:
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL` (remitente verificado en Resend)
+- Opcionales: `CONTACT_ADMIN_EMAIL`, `CONTACT_LOGO_URL`
 
 Email y teléfono directos están siempre visibles, así que el contacto funciona
 desde el primer momento.
