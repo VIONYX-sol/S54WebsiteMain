@@ -1082,7 +1082,7 @@ function renderAll() {
   cont.innerHTML = visible.map(cp => {
     const badgesHtml  = cp.badges.map(b=>`<span class="gs54-hero-badge">${b.i} ${b.t}</span>`).join('');
     const heroMedia   = cp.video
-      ? `<video autoplay muted loop playsinline preload="metadata" src="${cp.video}" data-lightbox-src="${cp.video}" data-lightbox-type="video" data-lightbox-title="${cp.nombre} — Vídeo del complejo" class="gs54-lbx-trigger" style="cursor:zoom-in;"></video>`
+      ? `<video autoplay muted loop playsinline preload="none" src="${cp.video}"></video>`
       : '';
     // Fotos del panel lateral con lightbox
     const allComplejoMedia = [...(cp.video ? [{src:cp.video, type:'video', title:`${cp.nombre} — Vídeo`}] : []), ...cp.fotos.map(f=>({src:f, type:'img', title:`${cp.nombre}`}))];
